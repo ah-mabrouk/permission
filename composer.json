@@ -1,0 +1,41 @@
+{
+    "name": "mabrouk/role-permission-groups",
+    "description": "a laravel package to handle dealing with permissions in custom groups",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ahmed Mabrouk",
+            "email": "a.mabrouk25@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "laravel/framework": ">=6",
+        "mabrouk/translatable": "^1.0",
+        "mabrouk/filterable": "^1.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^7.0@dev"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Mabrouk\\RolePermissionGroup\\PermissionServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Mabrouk\\RolePermissionGroup\\": "src/",
+            "Database\\Factories\\": "src/database/factories/",
+            "Database\\Seeders\\": "src/database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    }
+}

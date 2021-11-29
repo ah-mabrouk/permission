@@ -12,7 +12,7 @@ class RolePermissionGroupSetupCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'role_permission_groups:setup';
+    protected $signature = 'roles:setup';
 
     /**
      * The console command description.

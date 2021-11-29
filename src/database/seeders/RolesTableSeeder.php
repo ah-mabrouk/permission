@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\RoleTranslation;
 use Illuminate\Database\Seeder;
 use Mabrouk\RolePermissionGroup\Models\Role;
 use Mabrouk\RolePermissionGroup\Models\Permission;
+use Mabrouk\RolePermissionGroup\Models\RoleTranslation;
 
 class RolesTableSeeder extends Seeder
 {

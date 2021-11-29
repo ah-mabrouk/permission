@@ -41,7 +41,7 @@ class RouteInvestigator
     {
         $permissions = $this->permissionableRoutes->map(function ($route) {
             $newPermissionObject = new Permission([
-                'permission_group_id' => config('permissions.base_permissions_group_id'),
+                'permission_group_id' => config('permissions.base_permission_group_id'),
                 'url' => $this->sanitizeBaseUrl($route->uri),
             ]);
             $newPermissionObject->name = ! Str::contains($newPermissionObject->url, '{') ? $newPermissionObject->url : $this->sanitizeRouteModelIdentifier($newPermissionObject->url);

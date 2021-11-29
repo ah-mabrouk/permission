@@ -126,7 +126,7 @@ class RouteInvestigator
         for ($i = 0; $i < \count($this->baseUrls); $i++) {
             if (Str::contains($url, $this->baseUrls[$i])) {
                 $urlParts = \explode($this->baseUrls[$i] . '/', $url);
-                return \count($urlParts) > 0 ? $urlParts[1] : $urlParts[0];
+                return \count($urlParts) > 1 ? $urlParts[1] : $urlParts[0];
             }
         }
         return $url;

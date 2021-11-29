@@ -42,36 +42,15 @@ class PermissionSeedCommand extends Command
         $this->info('Seeding Role Permission Group package data...');
 
         $currentTranslationNamespace = config('translatable.translation_models_path');
+
         config(['translatable.translation_models_path' => 'Mabrouk\Permission\Models']);
+        $this->call('config:cache');
+
         $this->call('db:seed', ['--class' => RoleableSeeder::class]);
         config(['translatable.translation_models_path' => $currentTranslationNamespace]);
 
+        $this->call('config:cache');
+
         return Command::SUCCESS;
-    }
-
-    private function configExists($fileName)
-    {
-        return File::exists(config_path($fileName));
-    }
-
-    private function shouldOverwriteConfig()
-    {
-        return $this->confirm(
-            'Config file already exists. Do you want to overwrite it?',
-            false
-        );
-    }
-
-    private function publishConfiguration($forcePublish = false)
-    {
-        $params = [
-            '--provider' => 'Mabrouk\Permission\PermissionServiceProvider',
-        ];
-
-        if ($forcePublish === true) {
-            $params['--force'] = true;
-        }
-
-       $this->call('vendor:publish', $params);
     }
 }

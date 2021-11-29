@@ -12,7 +12,7 @@ class PermissionSetupCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'permissions:setup';
+    protected $signature = 'permission:setup';
 
     /**
      * The console command description.

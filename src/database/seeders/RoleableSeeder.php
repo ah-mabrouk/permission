@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class RoleableSeeder extends Seeder
 {
@@ -13,11 +14,13 @@ class RoleableSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            PermissionGroupsTableSeeder::class,
-            PermissionsTableSeeder::class,
-            SubPermissionsTableSeeder::class,
-            RolesTableSeeder::class,
-         ]);
+        DB::transaction(function () {
+            $this->call([
+                PermissionGroupsTableSeeder::class,
+                PermissionsTableSeeder::class,
+                SubPermissionsTableSeeder::class,
+                RolesTableSeeder::class,
+             ]);
+        });
     }
 }

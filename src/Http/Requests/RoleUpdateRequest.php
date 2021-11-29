@@ -2,6 +2,7 @@
 
 namespace Mabrouk\RolePermissionGroup\Http\Requests;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RoleUpdateRequest extends FormRequest
@@ -35,10 +36,15 @@ class RoleUpdateRequest extends FormRequest
 
     public function updateRole()
     {
-        $this->role->update([
-            'id' => $this->role->id,
-        ]);
-        $this->updatePermissions();
+        $currentTranslationNamespace = config('translatable.translation_models_path');
+        config(['translatable.translation_models_path' => 'Mabrouk\RolePermissionGroup\Models']);
+        DB::transaction(function () {
+            $this->role->update([
+                'id' => $this->role->id,
+            ]);
+            $this->updatePermissions();
+        });
+        config(['translatable.translation_models_path' => $currentTranslationNamespace]);
         return $this->role->refresh();
     }
 

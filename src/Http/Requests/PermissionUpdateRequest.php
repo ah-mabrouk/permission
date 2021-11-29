@@ -42,7 +42,10 @@ class PermissionUpdateRequest extends FormRequest
 
     public function updatePermission()
     {
+        $currentTranslationNamespace = config('translatable.translation_models_path');
+        config(['translatable.translation_models_path' => 'Mabrouk\RolePermissionGroup\Models']);
         $this->permission->update([]);
+        config(['translatable.translation_models_path' => $currentTranslationNamespace]);
         return $this->permission->refresh();
     }
 }

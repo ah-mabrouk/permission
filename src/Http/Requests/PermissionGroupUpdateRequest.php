@@ -2,6 +2,7 @@
 
 namespace Mabrouk\RolePermissionGroup\Http\Requests;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Http\FormRequest;
 use Mabrouk\RolePermissionGroup\Models\Permission;
 
@@ -33,12 +34,17 @@ class PermissionGroupUpdateRequest extends FormRequest
 
     public function updatePermissionGroup()
     {
-        if ($this->exists('name')) {
-            $this->permission_group->update([
-                'id' => $this->permission_group->id,
-            ]);
-        }
-        $this->updateGroupPermissions();
+        $currentTranslationNamespace = config('translatable.translation_models_path');
+        config(['translatable.translation_models_path' => 'Mabrouk\RolePermissionGroup\Models']);
+        DB::transaction(function () {
+            if ($this->exists('name')) {
+                $this->permission_group->update([
+                    'id' => $this->permission_group->id,
+                ]);
+            }
+            $this->updateGroupPermissions();
+        });
+        config(['translatable.translation_models_path' => $currentTranslationNamespace]);
         return $this->permission_group->refresh();
     }
 

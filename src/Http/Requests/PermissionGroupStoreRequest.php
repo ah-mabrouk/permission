@@ -31,7 +31,10 @@ class PermissionGroupStoreRequest extends FormRequest
 
     public function storePermissionGroup()
     {
+        $currentTranslationNamespace = config('translatable.translation_models_path');
+        config(['translatable.translation_models_path' => 'Mabrouk\RolePermissionGroup\Models']);
         $this->permissionGroup = PermissionGroup::create([]);
+        config(['translatable.translation_models_path' => $currentTranslationNamespace]);
         return $this->permissionGroup->refresh();
     }
 }

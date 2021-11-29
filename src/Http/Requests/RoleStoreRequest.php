@@ -32,7 +32,10 @@ class RoleStoreRequest extends FormRequest
 
     public function storeRole()
     {
+        $currentTranslationNamespace = config('translatable.translation_models_path');
+        config(['translatable.translation_models_path' => 'Mabrouk\RolePermissionGroup\Models']);
         $this->role = Role::create([]);
+        config(['translatable.translation_models_path' => $currentTranslationNamespace]);
         return $this->role->refresh();
     }
 }

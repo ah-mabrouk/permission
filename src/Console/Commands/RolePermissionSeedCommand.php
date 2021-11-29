@@ -41,7 +41,10 @@ class RolePermissionSeedCommand extends Command
     {
         $this->info('Seeding Role Permission Group package data...');
 
+        $currentTranslationNamespace = config('translatable.translation_models_path');
+        config(['translatable.translation_models_path' => 'Mabrouk\RolePermissionGroup\Models']);
         $this->call('db:seed', ['--class' => RoleableSeeder::class]);
+        config(['translatable.translation_models_path' => $currentTranslationNamespace]);
 
         return Command::SUCCESS;
     }

@@ -11,6 +11,20 @@ use Mabrouk\Permission\Http\Middleware\PermissionOfficerMiddleware;
 
 class PermissionServiceProvider extends ServiceProvider
 {
+    private $packageMigrations = [
+        'create_permission_groups_table',
+        'create_permission_group_translations_table',
+        'create_permissions_table',
+        'create_permission_translations_table',
+        'create_sub_permissions_table',
+        'create_sub_permission_translations_table',
+        'create_roles_table',
+        'create_role_translations_table',
+        'create_permission_role_table',
+        'create_permission_role_sub_permission_table',
+        'create_roleables_table',
+    ];
+
     /**
      * Register services.
      *
@@ -79,30 +93,23 @@ class PermissionServiceProvider extends ServiceProvider
     {
         $migrationFiles = [];
 
-        switch (true) {
-            case ! class_exists('CreatePermissionGroupsTable') :
-                $migrationFiles[__DIR__ . '/database/migrations/create_permission_groups_table.php.stub'] = database_path('migrations/' . date('Y_m_d_His', time()) . '_create_permission_groups_table.php');
-            case ! class_exists('CreatePermissionGroupTranslationsTable') :
-                $migrationFiles[__DIR__ . '/database/migrations/create_permission_group_translations_table.php.stub'] = database_path('migrations/' . date('Y_m_d_His', time()) . '_create_permission_group_translations_table.php');
-            case ! class_exists('CreatePermissionsTable') :
-                $migrationFiles[__DIR__ . '/database/migrations/create_permissions_table.php.stub'] = database_path('migrations/' . date('Y_m_d_His', time()) . '_create_permissions_table.php');
-            case ! class_exists('CreatePermissionTranslationsTable') :
-                $migrationFiles[__DIR__ . '/database/migrations/create_permission_translations_table.php.stub'] = database_path('migrations/' . date('Y_m_d_His', time()) . '_create_permission_translations_table.php');
-            case ! class_exists('CreateSubPermissionsTable') :
-                $migrationFiles[__DIR__ . '/database/migrations/create_sub_permissions_table.php.stub'] = database_path('migrations/' . date('Y_m_d_His', time()) . '_create_sub_permissions_table.php');
-            case ! class_exists('CreateSubPermissionTranslationsTable') :
-                $migrationFiles[__DIR__ . '/database/migrations/create_sub_permission_translations_table.php.stub'] = database_path('migrations/' . date('Y_m_d_His', time()) . '_create_sub_permission_translations_table.php');
-            case ! class_exists('CreateRolesTable') :
-                $migrationFiles[__DIR__ . '/database/migrations/create_roles_table.php.stub'] = database_path('migrations/' . date('Y_m_d_His', time()) . '_create_roles_table.php');
-            case ! class_exists('CreateRoleTranslationsTable') :
-                $migrationFiles[__DIR__ . '/database/migrations/create_role_translations_table.php.stub'] = database_path('migrations/' . date('Y_m_d_His', time()) . '_create_role_translations_table.php');
-            case ! class_exists('CreatePermissionRoleTable') :
-                $migrationFiles[__DIR__ . '/database/migrations/create_permission_role_table.php.stub'] = database_path('migrations/' . date('Y_m_d_His', time()) . '_create_permission_role_table.php');
-            case ! class_exists('CreatePermissionRoleSubPermissionTable') :
-                $migrationFiles[__DIR__ . '/database/migrations/create_permission_role_sub_permission_table.php.stub'] = database_path('migrations/' . date('Y_m_d_His', time()) . '_create_permission_role_sub_permission_table.php');
-            case ! class_exists('CreateRoleablesTable') :
-                $migrationFiles[__DIR__ . '/database/migrations/create_roleables_table.php.stub'] = database_path('migrations/' . date('Y_m_d_His', time()) . '_create_roleables_table.php');
+        foreach ($this->packageMigrations as $migrationName) {
+            if (! $this->migrationExists($migrationName)) {
+                $migrationFiles[__DIR__ . "/database/migrations/{$migrationName}.php.stub"] = database_path('migrations/' . date('Y_m_d_His', time()) . "_{$migrationName}.php");
+            }
         }
         return $migrationFiles;
+    }
+
+    protected function migrationExists($migrationName)
+    {
+        $path = database_path('migrations/');
+        $files = scandir($path);
+        $pos = false;
+        foreach ($files as &$value) {
+            $pos = strpos($value, $migrationName);
+            if ($pos !== false) return true;
+        }
+        return false;
     }
 }

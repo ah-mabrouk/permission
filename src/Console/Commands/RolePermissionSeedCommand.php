@@ -3,8 +3,8 @@
 namespace Mabrouk\RolePermissionGroup\Console\Commands;
 
 use Illuminate\Console\Command;
+use Database\Seeders\RoleableSeeder;
 use Illuminate\Support\Facades\File;
-use Mabrouk\RolePermissionGroup\Database\Seeders\RoleableSeeder;
 
 class RolePermissionSeedCommand extends Command
 {
@@ -41,7 +41,7 @@ class RolePermissionSeedCommand extends Command
     {
         $this->info('Seeding Role Permission Group package data...');
 
-        $this->call('db:seed', ['--class' => 'Mabrouk\RolePermissionGroup\Database\Seeders\RoleableSeeder']);
+        $this->call('db:seed', ['--class' => RoleableSeeder::class]);
 
         return Command::SUCCESS;
     }

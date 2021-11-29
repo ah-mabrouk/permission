@@ -51,6 +51,8 @@ class PermissionSetupCommand extends Command
                 $this->info('Existing configuration was not overwritten');
             }
         }
+        $this->info('Caching configs...');
+        $this->call('config:cache');
 
         $this->info('Running migrate command...');
         $this->call('migrate');

@@ -41,7 +41,7 @@ class RolePermissionSeedCommand extends Command
     {
         $this->info('Seeding Role Permission Group package data...');
 
-        $this->call('db:seed', ['--class' => RoleableSeeder::class]);
+        $this->call('db:seed', ['--class' => 'Mabrouk\RolePermissionGroup\Database\Seeders\RoleableSeeder']);
 
         return Command::SUCCESS;
     }

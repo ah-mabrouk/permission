@@ -5,7 +5,9 @@ namespace Mabrouk\RolePermissionGroup;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Mabrouk\RolePermissionGroup\Console\Commands\RolePermissionSeedCommand;
 use Mabrouk\RolePermissionGroup\Http\Middleware\PermissionOfficerMiddleware;
+use Mabrouk\RolePermissionGroup\Console\Commands\RolePermissionGroupSetupCommand;
 
 class RolePermissionGroupServiceProvider extends ServiceProvider
 {
@@ -31,6 +33,12 @@ class RolePermissionGroupServiceProvider extends ServiceProvider
         $this->registerRoutes();
 
         if ($this->app->runningInConsole()) {
+
+            $this->commands([
+                RolePermissionGroupSetupCommand::class,
+                RolePermissionSeedCommand::class,
+            ]);
+
             /**
              * Migrations
              */

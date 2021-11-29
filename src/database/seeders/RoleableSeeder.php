@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Mabrouk\RolePermissionGroup\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 

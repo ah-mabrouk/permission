@@ -23,6 +23,9 @@ return [
     */
 
     'base_urls' => [
+        'permission-groups',
+        'permissions',
+        'roles',
         'admin-panel',
     ],
 

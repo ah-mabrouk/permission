@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Mabrouk\RolePermissionGroup\Models\Permission;
-use Mabrouk\RolePermissionGroup\Models\SubPermission;
-use Mabrouk\RolePermissionGroup\Helpers\RouteInvestigator;
+use Mabrouk\Permission\Models\Permission;
+use Mabrouk\Permission\Models\SubPermission;
+use Mabrouk\Permission\Helpers\RouteInvestigator;
 
 class SubPermissionsTableSeeder extends Seeder
 {

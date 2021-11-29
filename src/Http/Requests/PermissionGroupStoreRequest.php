@@ -1,9 +1,9 @@
 <?php
 
-namespace Mabrouk\RolePermissionGroup\Http\Requests;
+namespace Mabrouk\Permission\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Mabrouk\RolePermissionGroup\Models\PermissionGroup;
+use Mabrouk\Permission\Models\PermissionGroup;
 
 class PermissionGroupStoreRequest extends FormRequest
 {
@@ -32,7 +32,7 @@ class PermissionGroupStoreRequest extends FormRequest
     public function storePermissionGroup()
     {
         $currentTranslationNamespace = config('translatable.translation_models_path');
-        config(['translatable.translation_models_path' => 'Mabrouk\RolePermissionGroup\Models']);
+        config(['translatable.translation_models_path' => 'Mabrouk\Permission\Models']);
         $this->permissionGroup = PermissionGroup::create([]);
         config(['translatable.translation_models_path' => $currentTranslationNamespace]);
         return $this->permissionGroup->refresh();

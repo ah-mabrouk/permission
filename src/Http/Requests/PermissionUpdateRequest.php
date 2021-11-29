@@ -1,6 +1,6 @@
 <?php
 
-namespace Mabrouk\RolePermissionGroup\Http\Requests;
+namespace Mabrouk\Permission\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -43,7 +43,7 @@ class PermissionUpdateRequest extends FormRequest
     public function updatePermission()
     {
         $currentTranslationNamespace = config('translatable.translation_models_path');
-        config(['translatable.translation_models_path' => 'Mabrouk\RolePermissionGroup\Models']);
+        config(['translatable.translation_models_path' => 'Mabrouk\Permission\Models']);
         $this->permission->update([]);
         config(['translatable.translation_models_path' => $currentTranslationNamespace]);
         return $this->permission->refresh();

@@ -1,6 +1,6 @@
 <?php
 
-namespace Mabrouk\RolePermissionGroup\Filters;
+namespace Mabrouk\Permission\Filters;
 
 use Mabrouk\Filterable\Helpers\QueryFilter;
 

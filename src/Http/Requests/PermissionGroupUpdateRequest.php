@@ -1,10 +1,10 @@
 <?php
 
-namespace Mabrouk\RolePermissionGroup\Http\Requests;
+namespace Mabrouk\Permission\Http\Requests;
 
 use Illuminate\Support\Facades\DB;
+use Mabrouk\Permission\Models\Permission;
 use Illuminate\Foundation\Http\FormRequest;
-use Mabrouk\RolePermissionGroup\Models\Permission;
 
 class PermissionGroupUpdateRequest extends FormRequest
 {
@@ -35,7 +35,7 @@ class PermissionGroupUpdateRequest extends FormRequest
     public function updatePermissionGroup()
     {
         $currentTranslationNamespace = config('translatable.translation_models_path');
-        config(['translatable.translation_models_path' => 'Mabrouk\RolePermissionGroup\Models']);
+        config(['translatable.translation_models_path' => 'Mabrouk\Permission\Models']);
         DB::transaction(function () {
             if ($this->exists('name')) {
                 $this->permission_group->update([

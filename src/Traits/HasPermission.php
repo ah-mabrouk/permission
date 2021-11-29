@@ -1,19 +1,19 @@
 <?php
 
-namespace Mabrouk\RolePermissionGroup\Traits;
+namespace Mabrouk\Permission\Traits;
 
-use Mabrouk\RolePermissionGroup\Models\Role;
-use Mabrouk\RolePermissionGroup\Models\Permission;
-use Mabrouk\RolePermissionGroup\Models\SubPermission;
+use Mabrouk\Permission\Models\Role;
+use Mabrouk\Permission\Models\Permission;
+use Mabrouk\Permission\Models\SubPermission;
 
-Trait HasRoles
+Trait HasPermission
 {
     /**
      * return the authenticated user depending on model class in
-     * config('roleable.project_owner_model')
+     * config('permissions.project_owner_model')
      *
      * you may change this value by overriding this static method
-     * in the predefined model class in config('roleable.project_owner_model')
+     * in the predefined model class in config('permissions.project_owner_model')
      */
     public static function authUser()
     {

@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Mabrouk\RolePermissionGroup\Models\Role;
-use Mabrouk\RolePermissionGroup\Models\Permission;
-use Mabrouk\RolePermissionGroup\Models\RoleTranslation;
+use Mabrouk\Permission\Models\Role;
+use Mabrouk\Permission\Models\Permission;
+use Mabrouk\Permission\Models\RoleTranslation;
 
 class RolesTableSeeder extends Seeder
 {
@@ -47,8 +47,8 @@ class RolesTableSeeder extends Seeder
     private function assignOwnerRole()
     {
         $role = Role::find(0);
-        $ownerIdentifier = config('roleable.project_owner_id');
-        $model = config('roleable.project_owner_model');
+        $ownerIdentifier = config('permissions.project_owner_id');
+        $model = config('permissions.project_owner_model');
         $owner = $model::find($ownerIdentifier);
         $this->giveOwnerRoleAllPermissions($role);
         if ((bool) $owner) {

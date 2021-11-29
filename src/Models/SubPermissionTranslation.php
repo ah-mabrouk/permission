@@ -1,6 +1,6 @@
 <?php
 
-namespace Mabrouk\RolePermissionGroup\Models;
+namespace Mabrouk\Permission\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

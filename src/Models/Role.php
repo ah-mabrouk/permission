@@ -1,6 +1,6 @@
 <?php
 
-namespace Mabrouk\RolePermissionGroup\Models;
+namespace Mabrouk\Permission\Models;
 
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -53,7 +53,7 @@ class Role extends Model
 
     public function __call($methodName, $params)
     {
-        return \array_key_exists($methodName, config('roleable.roleable_models')) ? $this->relatedModel($methodName, config("roleable.roleable_models.{$methodName}"), $params) : Parent::__call($methodName, $params);
+        return \array_key_exists($methodName, config('permissions.roleable_models')) ? $this->relatedModel($methodName, config("permissions.roleable_models.{$methodName}"), $params) : Parent::__call($methodName, $params);
     }
 
     public function syncPermissions(array $permissions) : self
@@ -95,15 +95,15 @@ class Role extends Model
     public function remove()
     {
         $response = [];
-        $response['message'] = __('mabrouk/role_permission_group/roles.destroy');
+        $response['message'] = __('mabrouk/permission/roles.destroy');
         $response['response_code'] = 200;
         switch (true) {
             case $this->id == 0:
-                $response['message'] = __('mabrouk/role_permission_group/roles.cant_destroy_super_admin_role');
+                $response['message'] = __('mabrouk/permission/roles.cant_destroy_super_admin_role');
                 $this->response['response_code'] = 403;
                 break;
             case (bool) $this->users()->count() :
-                $response['message'] = __('mabrouk/role_permission_group/roles.cant_destroy');
+                $response['message'] = __('mabrouk/permission/roles.cant_destroy');
                 $response['response_code'] = 403;
             break;
         }

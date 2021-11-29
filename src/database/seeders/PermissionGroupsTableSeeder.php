@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Mabrouk\RolePermissionGroup\Models\PermissionGroup;
-use Mabrouk\RolePermissionGroup\Models\PermissionGroupTranslation;
+use Mabrouk\Permission\Models\PermissionGroup;
+use Mabrouk\Permission\Models\PermissionGroupTranslation;
 
 class PermissionGroupsTableSeeder extends Seeder
 {

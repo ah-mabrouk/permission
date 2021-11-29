@@ -1,9 +1,9 @@
 <?php
 
-namespace Mabrouk\RolePermissionGroup\Http\Resources;
+namespace Mabrouk\Permission\Http\Resources;
 
+use Mabrouk\Permission\Models\PermissionGroup;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Mabrouk\RolePermissionGroup\Models\PermissionGroup;
 
 class RoleResource extends JsonResource
 {

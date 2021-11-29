@@ -1,8 +1,8 @@
 <?php
 
-namespace Mabrouk\RolePermissionGroup\Tests;
+namespace Mabrouk\Permission\Tests;
 
-use Mabrouk\RolePermissionGroup\RolePermissionGroupServiceProvider;
+use Mabrouk\Permission\PermissionServiceProvider;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -15,7 +15,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
   protected function getPackageProviders($app)
   {
     return [
-        RolePermissionGroupServiceProvider::class,
+        PermissionServiceProvider::class,
     ];
   }
 

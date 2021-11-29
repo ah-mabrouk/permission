@@ -1,15 +1,15 @@
 <?php
 
-namespace Mabrouk\RolePermissionGroup;
+namespace Mabrouk\Permission;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Mabrouk\RolePermissionGroup\Console\Commands\RolePermissionSeedCommand;
-use Mabrouk\RolePermissionGroup\Http\Middleware\PermissionOfficerMiddleware;
-use Mabrouk\RolePermissionGroup\Console\Commands\RolePermissionGroupSetupCommand;
+use Mabrouk\Permission\Console\Commands\PermissionSeedCommand;
+use Mabrouk\Permission\Console\Commands\PermissionSetupCommand;
+use Mabrouk\Permission\Http\Middleware\PermissionOfficerMiddleware;
 
-class RolePermissionGroupServiceProvider extends ServiceProvider
+class PermissionServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -28,15 +28,15 @@ class RolePermissionGroupServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        require_once __DIR__ . '/Helpers/RolePermissionGroupHelperFunctions.php';
+        require_once __DIR__ . '/Helpers/PermissionHelperFunctions.php';
 
         $this->registerRoutes();
 
         if ($this->app->runningInConsole()) {
 
             $this->commands([
-                RolePermissionGroupSetupCommand::class,
-                RolePermissionSeedCommand::class,
+                PermissionSetupCommand::class,
+                PermissionSeedCommand::class,
             ]);
 
             /**
@@ -44,7 +44,7 @@ class RolePermissionGroupServiceProvider extends ServiceProvider
              */
             $migrationFiles = $this->migrationFiles();
             if (\count($migrationFiles) > 0) {
-                $this->publishes($migrationFiles, 'role-permission-groups-migrations');
+                $this->publishes($migrationFiles, 'permission_migrations');
             }
 
             $router = $this->app->make(Router::class);
@@ -54,7 +54,7 @@ class RolePermissionGroupServiceProvider extends ServiceProvider
              * Config and static translations
              */
             $this->publishes([
-                __DIR__ . '/config/role_permission_group.php' => config_path('role_permission_group.php'), // ? Config
+                __DIR__ . '/config/permissions.php' => config_path('permissions.php'), // ? Config
                 __DIR__ . '/resources/lang' => resource_path('lang'), // ? Static translations
             ]);
         }
@@ -63,15 +63,15 @@ class RolePermissionGroupServiceProvider extends ServiceProvider
     protected function registerRoutes()
     {
         Route::group($this->routeConfiguration(), function () {
-            $this->loadRoutesFrom(__DIR__ . '/routes/role_permission_group_routes.php');
+            $this->loadRoutesFrom(__DIR__ . '/routes/permission_routes.php');
         });
     }
 
     protected function routeConfiguration()
     {
         return [
-            'namespace' => 'Mabrouk\RolePermissionGroup\Http\Controllers',
-            'prefix' => config('role_permission_group.prefix'),
+            'namespace' => 'Mabrouk\Permission\Http\Controllers',
+            'prefix' => config('permissions.prefix'),
         ];
     }
 

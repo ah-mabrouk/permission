@@ -1,10 +1,10 @@
 <?php
 
-namespace Mabrouk\RolePermissionGroup\Http\Controllers;
+namespace Mabrouk\Permission\Http\Controllers;
 
-use Mabrouk\RolePermissionGroup\Models\Permission;
-use Mabrouk\RolePermissionGroup\Http\Resources\PermissionResource;
-use Mabrouk\RolePermissionGroup\Http\Requests\PermissionUpdateRequest;
+use Mabrouk\Permission\Models\Permission;
+use Mabrouk\Permission\Http\Resources\PermissionResource;
+use Mabrouk\Permission\Http\Requests\PermissionUpdateRequest;
 
 class PermissionController extends Controller
 {
@@ -23,7 +23,7 @@ class PermissionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \Mabrouk\RolePermissionGroup\Models\Permission  $permission
+     * @param  \Mabrouk\Permission\Models\Permission  $permission
      * @return \Illuminate\Http\Response
      */
     public function show(Permission $permission)
@@ -36,15 +36,15 @@ class PermissionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Mabrouk\RolePermissionGroup\Http\Requests\PermissionUpdateRequest  $request
-     * @param  \Mabrouk\RolePermissionGroup\Models\Permission  $permission
+     * @param  Mabrouk\Permission\Http\Requests\PermissionUpdateRequest  $request
+     * @param  \Mabrouk\Permission\Models\Permission  $permission
      * @return \Illuminate\Http\Response
      */
     public function update(PermissionUpdateRequest $request, Permission $permission)
     {
         $permission = $request->updatePermission();
         return response([
-            'message' => __('mabrouk/role_permission_group/permissions.update'),
+            'message' => __('mabrouk/permission/permissions.update'),
             'permission' => new PermissionResource($permission),
         ]);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Mabrouk\RolePermissionGroup\Http\Middleware;
+namespace Mabrouk\Permission\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Str;
@@ -25,7 +25,7 @@ class PermissionOfficerMiddleware
 
     private function authUser()
     {
-        return config('roleable.project_owner_model')::authUser();
+        return config('permissions.project_owner_model')::authUser();
     }
 
     /**

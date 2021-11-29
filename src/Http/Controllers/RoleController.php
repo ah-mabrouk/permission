@@ -1,20 +1,20 @@
 <?php
 
-namespace Mabrouk\RolePermissionGroup\Http\Controllers;
+namespace Mabrouk\Permission\Http\Controllers;
 
-use Mabrouk\RolePermissionGroup\Models\Role;
-use Mabrouk\RolePermissionGroup\Admin\RoleFilter;
-use Mabrouk\RolePermissionGroup\Http\Resources\RoleResource;
+use Mabrouk\Permission\Models\Role;
+use Mabrouk\Permission\Filters\RoleFilter;
+use Mabrouk\Permission\Http\Resources\RoleResource;
+use Mabrouk\Permission\Http\Requests\RoleStoreRequest;
+use Mabrouk\Permission\Http\Requests\RoleUpdateRequest;
 use Mabrouk\PermissionGroup\Http\Resources\RoleSimpleResource;
-use Mabrouk\RolePermissionGroup\Http\Requests\RoleStoreRequest;
-use Mabrouk\RolePermissionGroup\Http\Requests\RoleUpdateRequest;
 
 class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param  Mabrouk\RolePermissionGroup\Admin\RoleFilter  $filters
+     * @param  Mabrouk\Permission\Admin\RoleFilter  $filters
      * @return \Illuminate\Http\Response
      */
     public function index(RoleFilter $filters)
@@ -27,14 +27,14 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Mabrouk\RolePermissionGroup\Http\Requests\RoleStoreRequest  $request
+     * @param  Mabrouk\Permission\Http\Requests\RoleStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(RoleStoreRequest $request)
     {
         $role = $request->storeRole();
         return response([
-            'message' => __('mabrouk/role_permission_group/roles.store'),
+            'message' => __('mabrouk/permission/roles.store'),
             'role' => new RoleResource($role),
         ]);
     }
@@ -42,7 +42,7 @@ class RoleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \Mabrouk\RolePermissionGroup\Models\Role  $role
+     * @param  \Mabrouk\Permission\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
     public function show(Role $role)
@@ -55,15 +55,15 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Mabrouk\RolePermissionGroup\Http\Requests\RoleUpdateRequest  $request
-     * @param  \Mabrouk\RolePermissionGroup\Models\Role  $role
+     * @param  Mabrouk\Permission\Http\Requests\RoleUpdateRequest  $request
+     * @param  \Mabrouk\Permission\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
     public function update(RoleUpdateRequest $request, Role $role)
     {
         $role = $request->updateRole();
         return response([
-            'message' => __('mabrouk/role_permission_group/roles.update'),
+            'message' => __('mabrouk/permission/roles.update'),
             'role' => new RoleResource($role),
         ]);
     }
@@ -71,7 +71,7 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Mabrouk\RolePermissionGroup\Models\Role  $role
+     * @param  \Mabrouk\Permission\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
     public function destroy(Role $role)

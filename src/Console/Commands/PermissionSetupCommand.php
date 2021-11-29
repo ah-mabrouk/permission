@@ -1,26 +1,25 @@
 <?php
 
-namespace Mabrouk\RolePermissionGroup\Console\Commands;
+namespace Mabrouk\Permission\Console\Commands;
 
 use Illuminate\Console\Command;
-use Database\Seeders\RoleableSeeder;
 use Illuminate\Support\Facades\File;
 
-class RolePermissionSeedCommand extends Command
+class PermissionSetupCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'permissions:seed';
+    protected $signature = 'permissions:setup';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Seed Role Permission Groups according to current routes and configurations';
+    protected $description = 'Install and Publish Role Permission Groups Package';
 
     /**
      * Create a new command instance.
@@ -39,12 +38,22 @@ class RolePermissionSeedCommand extends Command
      */
     public function handle()
     {
-        $this->info('Seeding Role Permission Group package data...');
+        $this->info('Publishing configuration...');
 
-        $currentTranslationNamespace = config('translatable.translation_models_path');
-        config(['translatable.translation_models_path' => 'Mabrouk\RolePermissionGroup\Models']);
-        $this->call('db:seed', ['--class' => RoleableSeeder::class]);
-        config(['translatable.translation_models_path' => $currentTranslationNamespace]);
+        if (! $this->configExists('permissions.php')) {
+            $this->publishConfiguration();
+            $this->info('Published configuration');
+        } else {
+            if ($this->shouldOverwriteConfig()) {
+                $this->info('Overwriting configuration file...');
+                $this->publishConfiguration($force = true);
+            } else {
+                $this->info('Existing configuration was not overwritten');
+            }
+        }
+
+        $this->info('Running migrate command...');
+        $this->call('migrate');
 
         return Command::SUCCESS;
     }
@@ -65,7 +74,7 @@ class RolePermissionSeedCommand extends Command
     private function publishConfiguration($forcePublish = false)
     {
         $params = [
-            '--provider' => 'Mabrouk\RolePermissionGroup\RolePermissionGroupServiceProvider',
+            '--provider' => 'Mabrouk\Permission\PermissionServiceProvider',
         ];
 
         if ($forcePublish === true) {

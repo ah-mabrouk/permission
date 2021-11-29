@@ -1,11 +1,11 @@
 <?php
 
-namespace Mabrouk\RolePermissionGroup\Http\Controllers;
+namespace Mabrouk\Permission\Http\Controllers;
 
-use Mabrouk\RolePermissionGroup\Models\PermissionGroup;
-use Mabrouk\RolePermissionGroup\Http\Resources\PermissionGroupResource;
-use Mabrouk\RolePermissionGroup\Http\Requests\PermissionGroupStoreRequest;
-use Mabrouk\RolePermissionGroup\Http\Requests\PermissionGroupUpdateRequest;
+use Mabrouk\Permission\Models\PermissionGroup;
+use Mabrouk\Permission\Http\Resources\PermissionGroupResource;
+use Mabrouk\Permission\Http\Requests\PermissionGroupStoreRequest;
+use Mabrouk\Permission\Http\Requests\PermissionGroupUpdateRequest;
 
 class PermissionGroupController extends Controller
 {
@@ -24,14 +24,14 @@ class PermissionGroupController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Mabrouk\RolePermissionGroup\Http\Requests\PermissionGroupStoreRequest  $request
+     * @param  Mabrouk\Permission\Http\Requests\PermissionGroupStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(PermissionGroupStoreRequest $request)
     {
         $permissionGroup = $request->storePermissionGroup();
         return response([
-            'message' => __('mabrouk/role_permission_group/permission_groups.store'),
+            'message' => __('mabrouk/permission/permission_groups.store'),
             'permission_group' => new PermissionGroupResource($permissionGroup),
         ]);
     }
@@ -39,7 +39,7 @@ class PermissionGroupController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \Mabrouk\RolePermissionGroup\Models\PermissionGroup  $permissionGroup
+     * @param  \Mabrouk\Permission\Models\PermissionGroup  $permissionGroup
      * @return \Illuminate\Http\Response
      */
     public function show(PermissionGroup $permissionGroup)
@@ -52,15 +52,15 @@ class PermissionGroupController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Mabrouk\RolePermissionGroup\Http\Requests\PermissionGroupUpdateRequest  $request
-     * @param  \Mabrouk\RolePermissionGroup\Models\PermissionGroup  $permissionGroup
+     * @param  Mabrouk\Permission\Http\Requests\PermissionGroupUpdateRequest  $request
+     * @param  \Mabrouk\Permission\Models\PermissionGroup  $permissionGroup
      * @return \Illuminate\Http\Response
      */
     public function update(PermissionGroupUpdateRequest $request, PermissionGroup $permissionGroup)
     {
         $permissionGroup = $request->updatePermissionGroup();
         return response([
-            'message' => __('mabrouk/role_permission_group/permission_groups.update'),
+            'message' => __('mabrouk/permission/permission_groups.update'),
             'permission_group' => new PermissionGroupResource($permissionGroup),
         ]);
     }
@@ -68,19 +68,19 @@ class PermissionGroupController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Mabrouk\RolePermissionGroup\Models\PermissionGroup  $permissionGroup
+     * @param  \Mabrouk\Permission\Models\PermissionGroup  $permissionGroup
      * @return \Illuminate\Http\Response
      */
     public function destroy(PermissionGroup $permissionGroup)
     {
         if ($permissionGroup->permissions()->count() > 0) {
             return response([
-                'message' => __('mabrouk/role_permission_group/permission_groups.cant_destroy'),
+                'message' => __('mabrouk/permission/permission_groups.cant_destroy'),
             ], 422);
         }
         $permissionGroup->deleteTranslations()->delete();
         return response([
-            'message' => __('mabrouk/role_permission_group/permission_groups.destroy'),
+            'message' => __('mabrouk/permission/permission_groups.destroy'),
         ]);
     }
 }

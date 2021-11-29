@@ -1,12 +1,12 @@
 <?php
 
-namespace Mabrouk\RolePermissionGroup\Helpers;
+namespace Mabrouk\Permission\Helpers;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Routing\Route as Router;
-use Mabrouk\RolePermissionGroup\Models\Permission;
+use Mabrouk\Permission\Models\Permission;
 
 class RouteInvestigator
 {

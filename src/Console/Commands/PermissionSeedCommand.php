@@ -44,12 +44,10 @@ class PermissionSeedCommand extends Command
         $currentTranslationNamespace = config('translatable.translation_models_path');
 
         config(['translatable.translation_models_path' => 'Mabrouk\Permission\Models']);
-        $this->call('config:cache');
 
         $this->call('db:seed', ['--class' => RoleableSeeder::class]);
-        config(['translatable.translation_models_path' => $currentTranslationNamespace]);
 
-        $this->call('config:cache');
+        config(['translatable.translation_models_path' => $currentTranslationNamespace]);
 
         return Command::SUCCESS;
     }

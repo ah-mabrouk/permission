@@ -53,5 +53,5 @@ return [
     |
     */
 
-    'base_permissions_group_id' => 1,
+    'base_permission_group_id' => 1,
 ];

@@ -13,7 +13,7 @@ class RolePermissionSeedCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'roles:seed';
+    protected $signature = 'permissions:seed';
 
     /**
      * The console command description.

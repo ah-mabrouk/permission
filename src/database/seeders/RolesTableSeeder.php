@@ -1,6 +1,6 @@
 <?php
 
-namespace Mabrouk\RolePermissionGroup\Database\Seeders;
+namespace Database\Seeders;
 
 use App\Models\RoleTranslation;
 use Illuminate\Database\Seeder;

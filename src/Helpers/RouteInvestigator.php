@@ -47,7 +47,7 @@ class RouteInvestigator
             $newPermissionObject->name = ! Str::contains($newPermissionObject->url, '{') ? $newPermissionObject->url : $this->sanitizeRouteModelIdentifier($newPermissionObject->url);
             return $newPermissionObject;
         })->unique('name')->filter(function ($permission) {
-            return ! \in_array($permission->name, $this->existingPermissions->pluck('name')->flatten()->toArray());
+            return $permission->name != null && ! \in_array($permission->name, $this->existingPermissions->pluck('name')->flatten()->toArray());
         });
         return $this->saveBulkPermissions($permissions);
     }

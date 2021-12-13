@@ -7,6 +7,17 @@ return [
 
     'project_owner_model' => App\Models\User::class,
 
+    'project_owners' => [
+        [
+            'model' => App\Models\User::class,
+            'ids' => [1],
+        ],
+        // [
+        //     'model' => App\Models\Admin::class,
+        //     'ids' => [5, 10, 11],
+        // ],
+    ],
+
     'project_owner_id' => 1,
 
     'routes_prefix' => 'api',

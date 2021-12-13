@@ -47,13 +47,13 @@ class RolesTableSeeder extends Seeder
     private function assignOwnerRole()
     {
         $role = Role::find(0);
-        $ownerIdentifier = config('permissions.project_owner_id');
-        $model = config('permissions.project_owner_model');
-        $owner = $model::find($ownerIdentifier);
         $this->giveOwnerRoleAllPermissions($role);
-        if ((bool) $owner) {
-            $owner->takeRole($role);
-        }
+        collect(config('permissions.project_owners'))->each(function ($ownerData) use ($role) {
+            $ownerData['model']::findMany($ownerData['ids'])
+                ->each(function ($owner) use ($role) {
+                    $owner->takeRole($role);
+                });
+        });
     }
 
     private function giveOwnerRoleAllPermissions(Role $role)

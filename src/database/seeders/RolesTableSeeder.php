@@ -48,12 +48,13 @@ class RolesTableSeeder extends Seeder
     {
         $role = Role::find(0);
         $this->giveOwnerRoleAllPermissions($role);
-        collect(config('permissions.project_owners'))->map(function ($ownerData) {
+        $owners = collect(config('permissions.project_owners'))->map(function ($ownerData) {
             return $ownerData['model']::findMany($ownerData['ids']);
-        })->flatten()->filter()->each(function ($owner) use ($role) {
-            $owner->takeRole($role);
-            dd($owner->id, $role->id);
-        });
+        })->flatten()->filter();
+        // ->each(function ($owner) use ($role) {
+        //     $owner->takeRole($role);
+        // });
+        dd($owners);
         // $ownerIdentifier = config('permissions.project_owner_id');
         // $model = config('permissions.project_owner_model');
         // $owner = $model::find($ownerIdentifier);

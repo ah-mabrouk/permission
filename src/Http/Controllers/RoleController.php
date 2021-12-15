@@ -7,7 +7,7 @@ use Mabrouk\Permission\Filters\RoleFilter;
 use Mabrouk\Permission\Http\Resources\RoleResource;
 use Mabrouk\Permission\Http\Requests\RoleStoreRequest;
 use Mabrouk\Permission\Http\Requests\RoleUpdateRequest;
-use Mabrouk\PermissionGroup\Http\Resources\RoleSimpleResource;
+use Mabrouk\Permission\Http\Resources\RoleSimpleResource;
 
 class RoleController extends Controller
 {

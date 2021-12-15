@@ -11,6 +11,11 @@ use Mabrouk\PermissionGroup\Http\Resources\RoleSimpleResource;
 
 class RoleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(\Illuminate\Routing\Middleware\SubstituteBindings::class);
+    }
+
     /**
      * Display a listing of the resource.
      *

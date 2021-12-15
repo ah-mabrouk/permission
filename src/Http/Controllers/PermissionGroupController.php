@@ -9,6 +9,11 @@ use Mabrouk\Permission\Http\Requests\PermissionGroupUpdateRequest;
 
 class PermissionGroupController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(\Illuminate\Routing\Middleware\SubstituteBindings::class);
+    }
+
     /**
      * Display a listing of the resource.
      *

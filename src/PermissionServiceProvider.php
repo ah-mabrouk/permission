@@ -61,9 +61,6 @@ class PermissionServiceProvider extends ServiceProvider
                 $this->publishes($migrationFiles, 'permission_migrations');
             }
 
-            $router = $this->app->make(Router::class);
-            $router->pushMiddlewareToGroup('api', PermissionOfficerMiddleware::class);
-
             /**
              * Config and static translations
              */
@@ -71,6 +68,9 @@ class PermissionServiceProvider extends ServiceProvider
                 __DIR__ . '/config/permissions.php' => config_path('permissions.php'), // ? Config
                 __DIR__ . '/resources/lang' => resource_path('lang'), // ? Static translations
             ]);
+
+            $this->app->make(Router::class)
+                ->aliasMiddleware('permission-officer', PermissionOfficerMiddleware::class);
         }
     }
 

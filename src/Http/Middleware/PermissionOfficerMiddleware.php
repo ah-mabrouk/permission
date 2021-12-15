@@ -42,8 +42,10 @@ class PermissionOfficerMiddleware
             $request->route()->methods()[0]
         );
         if (
-            ! (bool) $this->authUser()
-            || (
+            (
+                $this->routeIsPermissionable($request->route()->uri())
+                && ! (bool) $this->authUser()
+            ) || (
                 $routeSubPermissionName != null
                 && ! \in_array($routeSubPermissionName, $this->subPermissionsNames)
                 && $this->routeIsPermissionable($request->route()->uri())

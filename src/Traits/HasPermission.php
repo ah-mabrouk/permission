@@ -17,7 +17,7 @@ Trait HasPermission
      */
     public static function authUser()
     {
-        return auth()->user();
+        return auth('api')->user();
     }
 
     public function roles()

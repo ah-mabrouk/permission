@@ -85,7 +85,7 @@ class PermissionServiceProvider extends ServiceProvider
     {
         return [
             'namespace' => 'Mabrouk\Permission\Http\Controllers',
-            'prefix' => config('permissions.prefix'),
+            'prefix' => config('permissions.routes_prefix'),
         ];
     }
 

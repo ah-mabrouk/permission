@@ -29,20 +29,6 @@ class RouteInvestigator
         request()->routeInvestigator = $this;
         $this->existingPermissions = Permission::all();
         $this->permissionableRoutes = $this->permissionableRoutes();
-
-        dd(collect(Route::getRoutes())->map(function ($route) {
-            return $route->uri();
-            return [
-                'host'   => $route->domain(),
-                'method' => implode('|', $route->methods()),
-                'uri'    => $route->uri(),
-                'name'   => $route->getName(),
-                'action' => $route->getActionName(),
-            ];
-        })->filter(function ($routeString) {
-            // dd($routeString);
-            return ! str_starts_with($routeString, '_');
-        }));
     }
 
     /**

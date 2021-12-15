@@ -28,9 +28,21 @@ class RouteInvestigator
         $this->excludedRoutes = config('permissions.excluded_routes') ?? [];
         request()->routeInvestigator = $this;
         $this->existingPermissions = Permission::all();
-        $this->permissionableRoutes = collect(Route::getRoutes()->get())->filter(function ($route) {
-            return $this->routeIsPermissionable($route);
-        });
+        $this->permissionableRoutes = $this->permissionableRoutes();
+
+        dd(collect(Route::getRoutes())->map(function ($route) {
+            return $route->uri();
+            return [
+                'host'   => $route->domain(),
+                'method' => implode('|', $route->methods()),
+                'uri'    => $route->uri(),
+                'name'   => $route->getName(),
+                'action' => $route->getActionName(),
+            ];
+        })->filter(function ($routeString) {
+            // dd($routeString);
+            return ! str_starts_with($routeString, '_');
+        }));
     }
 
     /**
@@ -42,7 +54,7 @@ class RouteInvestigator
         $permissions = $this->permissionableRoutes->map(function ($route) {
             $newPermissionObject = new Permission([
                 'permission_group_id' => config('permissions.base_permission_group_id'),
-                'url' => $this->sanitizeBaseUrl($route->uri),
+                'url' => $this->sanitizeBaseUrl($route->uri()),
             ]);
             $newPermissionObject->name = ! Str::contains($newPermissionObject->url, '{') ? $newPermissionObject->url : $this->sanitizeRouteModelIdentifier($newPermissionObject->url);
             return $newPermissionObject;
@@ -82,7 +94,7 @@ class RouteInvestigator
 
     private function permissionIsRelatedToRoute(Permission $permission, Router $route)
     {
-        return $this->sanitizeBaseUrl($route->uri) == $permission->url || $this->sanitizeBaseUrl($route->uri) == $permission->url . '/' . $this->getLastRouteSegmentIdentifier($route->uri);
+        return $this->sanitizeBaseUrl($route->uri()) == $permission->url || $this->sanitizeBaseUrl($route->uri()) == $permission->url . '/' . $this->getLastRouteSegmentIdentifier($route->uri());
     }
 
     private function subPermissionNameFromRoute(Permission $permission, Router $route) : string
@@ -100,17 +112,28 @@ class RouteInvestigator
 
     /**
      *
+     * check just for in app routes
+     */
+    public function permissionableRoutes()
+    {
+        return collect(Route::getRoutes()->get())->filter(function ($route) {
+            return ! \str_starts_with($route->uri(), '_') && $this->routeIsPermissionable($route);
+        });
+    }
+
+    /**
+     *
      * check routes against permissions config ['baseUrls', 'excluded routes']
      */
     public function routeIsPermissionable(Router $route) : bool
     {
         for ($i = 0; $i < \count($this->excludedRoutes) ; $i++) {
-            if (Str::contains($route->uri, $this->excludedRoutes[$i])) {
+            if (Str::contains($route->uri(), $this->excludedRoutes[$i])) {
                 return false;
             }
         }
         for ($i = 0; $i < \count($this->baseUrls) ; $i++) {
-            if (Str::contains($route->uri, $this->baseUrls[$i])) {
+            if (Str::contains($route->uri(), $this->baseUrls[$i])) {
                 return true;
             }
         }

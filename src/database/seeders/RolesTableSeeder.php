@@ -23,7 +23,7 @@ class RolesTableSeeder extends Seeder
             ],
         ];
 
-        $currentRolesInTable = RoleTranslation::all()->flatten()->pluck('name')->toArray();
+        $currentRolesInTable = RoleTranslation::pluck('name')->flatten()->toArray();
 
         for ($i = 0; $i < \count($roles); $i++) {
             if (! \in_array($roles[$i]['name'], $currentRolesInTable)) {

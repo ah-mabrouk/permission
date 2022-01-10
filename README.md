@@ -57,7 +57,6 @@ The first option to apply it to ```api``` group for example will be more comfort
 * Now you need to run the following ```command``` in order to migrate package tables and publish ```permissions.php``` config file to config directory
 
 ```bash
-# migrate permission package database tables and publish permissions.php config file
 php artisan permission:setup
 ```
 
@@ -302,24 +301,9 @@ Please make sure to update tests as appropriate.
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
 > ### Under construction
-<br>
-<p align="center">
-    <!-- <a href="https://travis-ci.org/laravel/framework">
-        <img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status">
-    </a>
-    <a href="https://packagist.org/packages/laravel/framework">
-        <img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads">
-    </a>
-    <a href="https://packagist.org/packages/laravel/framework">
-        <img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version">
-        </a>
-    <a href="https://packagist.org/packages/laravel/framework">
-        <img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License">
-    </a> -->
-</p>
 
-### About PermissionGroup
+### About Mabrouk/Permission
 
 ## License
 
-PermissionGroup package is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Mabrouk/Permission package is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

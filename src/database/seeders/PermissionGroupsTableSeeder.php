@@ -26,7 +26,7 @@ class PermissionGroupsTableSeeder extends Seeder
             ],
         ];
 
-        $currentPermissionGroupsInTable = PermissionGroupTranslation::all()->flatten()->pluck('name')->toArray();
+        $currentPermissionGroupsInTable = PermissionGroupTranslation::pluck('name')->flatten()->toArray();
 
         for ($i = 0; $i < \count($permissionGroups); $i++) {
             if (! \in_array($permissionGroups[$i]['name'], $currentPermissionGroupsInTable)) {

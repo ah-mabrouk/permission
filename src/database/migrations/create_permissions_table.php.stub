@@ -18,7 +18,7 @@ class CreatePermissionsTable extends Migration
             $table->unsignedBigInteger('permission_group_id');
 
             $table->string('name')->unique();
-            $table->string('url')->unique();
+            $table->text('url')->unique();
 
             $table->timestamps();
         });

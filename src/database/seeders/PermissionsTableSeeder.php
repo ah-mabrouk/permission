@@ -15,12 +15,11 @@ class PermissionsTableSeeder extends Seeder
     public function run()
     {
         $investigator = new RouteInvestigator();
-        $permissions = $investigator->createPermissions()
-            ->map(function ($permission) {
-                $permission->translate([
-                    'display_name' => $permission->name,
-                ], 'en');
-                return $permission->refresh();
-            });
+        $investigator->createPermissions()->map(function ($permission) {
+            $permission->translate([
+                'display_name' => $permission->name,
+            ], 'en');
+            return $permission->refresh();
+        });
     }
 }

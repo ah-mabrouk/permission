@@ -19,7 +19,7 @@ class PermissionSetupCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Install and Publish Role Permission Groups Package';
+    protected $description = 'Install and Publish Mabrouk Permission Package';
 
     /**
      * Create a new command instance.
@@ -46,11 +46,12 @@ class PermissionSetupCommand extends Command
         } else {
             if ($this->shouldOverwriteConfig()) {
                 $this->info('Overwriting configuration file...');
-                $this->publishConfiguration($force = true);
+                $this->publishConfiguration(true);
             } else {
                 $this->info('Existing configuration was not overwritten');
             }
         }
+
         $this->info('Caching configs...');
         $this->call('config:cache');
 

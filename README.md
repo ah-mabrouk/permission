@@ -9,6 +9,22 @@ mabrouk/permission is a Laravel api package for dealing with project admins perm
 
 [Installation](#Installation)
 
+[Configurations according to project needs](#Configurations-according-to-project-needs)
+
+[Out of the box models](#Out-of-the-box-models)
+
+[Out of the box routes](#Out-of-the-box-routes)
+
+[What else?](#What-else?)
+
+[Models Api Resources to expect in requests response](#Models-Api-Resources-to-expect-in-requests-response)
+
+[Any thing else?](#Any-thing-else?)
+
+<!-- [Contributing](#Contributing) -->
+<!--  -->
+[License](#License)
+
 ## Important introduction
 
 In order to get the most benefit of this package results, try to follow the standard routes naming to have a well organized permissions names suites very well with your models naming as well.
@@ -289,8 +305,8 @@ class RoleSimpleResource extends JsonResource
 ## Any thing else?
 Actually one more thing to know is that this package depend on [mabrouk/translatable](https://github.com/ah-mabrouk/Translatable) package in order to handle translation dynamically for any chosen language.
 
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+<!-- ## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. -->
 
 ## License
 

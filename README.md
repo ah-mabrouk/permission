@@ -21,7 +21,7 @@ In order to get the most benefit of this package results, try to follow the stan
 
 * add new routes -if you don't have some- which have one of the basic urls in config file
 * run command ```php artisan permission:seed``` when you need to apply permissions on newly added routes.
-* include predefined routes which control permission groups, Roles, and permission display names in your api documentation to make it available for implementation from frontend developer working on admin-panel or any dashboard you specified its api base url in ```permissions.php``` config file. or guide frontend developer to this documentation [Frontend Api Integration](#Models-Api-Resources-to-expect-in-requests-response) section
+* include predefined routes which control permission groups, Roles, and permission display names in your api documentation to make it available for implementation from frontend developer working on admin-panel or any dashboard you specified its api base url in ```permissions.php``` config file. or guide frontend developer to this documentation [Models Api Resources to expect in requests response](#Models-Api-Resources-to-expect-in-requests-response) section
 
 ## Installation
 

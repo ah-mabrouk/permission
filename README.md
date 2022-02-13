@@ -44,7 +44,6 @@ After this you may accept it on any specific grouped routes like ```api``` group
 
 The first option to apply it to ```api``` group for example will be more comfortable during development process as you will not have to think about it anymore after configuring package configuration with your project needs.
 
-
 ```php
     protected $middlewareGroups = [
         'api' => [
@@ -60,6 +59,18 @@ The first option to apply it to ```api``` group for example will be more comfort
 php artisan permission:setup
 ```
 
+## Configurations according to project needs
+
+Config file have several configuration options and already have enough comments to describe every key meaning and how to use.
+
+You may access it under ```config/permissions.php```
+
+> After modifying ```permissions.php``` config file don't forget to run below command:
+
+```bash
+php artisan config:cache
+```
+
 * You are all done with installation and structure. Now we need just to understand how to use it.
 
 ## Out of the box models
@@ -67,8 +78,8 @@ php artisan permission:setup
 We have 4 basic models to deal with:
 
 - ```PermissionGroup``` have full crud with translatable name
-- ```Permission``` only index, // show and update of translatable description and display name only
-- ```SubPermission``` with no separate crud functionality
+- ```Permission``` only index, // show and update of translatable description and display name only. It depends on your project models names.
+- ```SubPermission``` with no separate crud functionality. usually it's one of (view, create, edit, delete).
 - ```Role``` have full crud with translatable name and description
 
 ## Out of the box routes
@@ -88,26 +99,22 @@ Route::apiResource('roles', RoleController::class);
 
 > Show, update and destroy routes accept model ```id``` as model segment in url
 
-## Configurations according to project needs
+> If above routes is not exists you may need to clear cached route using command ```php artisan route:clear```
 
-Config file already have enough comments to describe every key meaning and how to use.
-
-You may access if under ```config/permissions.php```
-
-> After modifing permissions.php config file don't forget to run below command:
-
-```bash
-php artisan config:cache
-```
 ## What else?
 
 You are one step away from basic handling your project permissions with only running below command after adding any additional routes under specified base urls defined in permissions.php config file.
+
+#### Note:
+> You need to run below command after adding any new routes related to namespaces you specified in config file in order to add its suitable permissions.
 
 ```bash
 php artisan permission:seed
 ```
 
-> Now you will find that specified objects in config file have full permissions
+> Now you will find that specified objects in config file have full permissions.
+
+> Sub Permissions will be added depending on your routes available actions. For example if you specified actions of api resource route to allow just store and destroy for example it will affect added sub permissions accordingly, otherwise it will add the 4 actions to super admin user to play with it according to specific role he is modifying.
 
 ## Models Api Resources to expect in requests response
 
@@ -279,30 +286,11 @@ class RoleSimpleResource extends JsonResource
 }
 ```
 
-## Usage
-
-```php
-# migrate permission package database tables and publish config file
-php artisan permission:setup
-```
-
-## Generate permissions and auto assign to defined models in config file
-
-```php
-# add any missing routes under base_urls specified in config file // config/permissions.php
-php artisan permission:seed
-```
+## Any thing else?
+Actually one more thing to know is that this package depend on [mabrouk/translatable](https://github.com/ah-mabrouk/Translatable) package in order to handle translation dynamically for any chosen language.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
-> ### Under construction
-
-### About Mabrouk/Permission
 
 ## License
 

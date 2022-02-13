@@ -21,8 +21,6 @@ mabrouk/permission is a Laravel api package for dealing with project admins perm
 
 [Any thing else?](#Any-thing-else?)
 
-<!-- [Contributing](#Contributing) -->
-<!--  -->
 [License](#License)
 
 ## Important introduction
@@ -115,20 +113,20 @@ Route::apiResource('roles', RoleController::class);
 
 > Show, update and destroy routes accept model ```id``` as model segment in url
 
-> If above routes is not exists you may need to clear cached route using command ```php artisan route:clear```
+> If above routes is not exists you may need to clear cached routes using command ```php artisan route:clear```
 
 ## What else?
 
-You are one step away from basic handling your project permissions with only running below command after adding any additional routes under specified base urls defined in permissions.php config file.
+You are one step away from handling your project permissions with only running below command after adding any additional routes under specified base urls defined in permissions.php config file.
 
 #### Note:
-> You need to run below command after adding any new routes related to namespaces you specified in config file in order to add its suitable permissions.
+> You need to run below command after adding any new routes related to ```base_urls``` you specified in config file in order to add its suitable permissions.
 
 ```bash
 php artisan permission:seed
 ```
 
-> Now you will find that specified objects in config file have full permissions.
+> Now you will find that specified ```project_full_permission_admins``` in config file have full permissions.
 
 > Sub Permissions will be added depending on your routes available actions. For example if you specified actions of api resource route to allow just store and destroy for example it will affect added sub permissions accordingly, otherwise it will add the 4 actions to super admin user to play with it according to specific role he is modifying.
 
@@ -305,8 +303,10 @@ class RoleSimpleResource extends JsonResource
 ## Any thing else?
 Actually one more thing to know is that this package depend on [mabrouk/translatable](https://github.com/ah-mabrouk/Translatable) package in order to handle translation dynamically for any chosen language.
 
-<!-- ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. -->
+> You will need to pass additional input "locale" in update requests of mentioned models and need to create roles and permission groups with your application default language.
+To get role/permission/permission group name or description with desired language you need to pass additional header to your requests "X-locale"
+
+> Both "locale" and "X-locale" accept values like ['en', 'ar', 'fr', ...] etc depending on languages you support in your project.
 
 ## License
 

@@ -1,6 +1,6 @@
 # Mabrouk/Permission
 
-mabrouk/permission is a Laravel api package for dealing with permissions.
+mabrouk/permission is a Laravel api package for dealing with project admins permissions.
 
 ## Table of Content
 [Important Introduction](#important-introduction)

@@ -1,6 +1,6 @@
 # Mabrouk/Permission
 
-mabrouk/permission is a Laravel api package for dealing with project admins permissions.
+mabrouk/permission is a Laravel api package for dealing with project admins permissions using Database approach.
 
 ## Table of Content
 [Important Introduction](#important-introduction)
@@ -10,6 +10,13 @@ mabrouk/permission is a Laravel api package for dealing with project admins perm
 [Installation](#Installation)
 
 [Configurations according to project needs](#Configurations-according-to-project-needs)
+
+[Using `HasPermission` Trait on desired models](#Using-`HasPermission`-Trait-on-desired-models)
+
+[Out of the box methods and attributes](#Out-of-the-box-methods-and-attributes)
+
+- [Methods](#Methods)
+- [Attributes](#Attributes)
 
 [Out of the box models](#Out-of-the-box-models)
 
@@ -85,14 +92,55 @@ You may access it under ```config/permissions.php```
 php artisan config:cache
 ```
 
+## Using `HasPermission` Trait on desired models
+
+Now you need to add ```Mabrouk\Permission\Traits\HasPermission.php``` trait on models which will have roles such as "User" model for example. Don't forget to add this trait to all models you specified in ```permission.php``` config file under the key ```roleable_models``` and don't forget to carefully read the instructions included in config file.
+
 * You are all done with installation and structure. Now we need just to understand how to use it.
+
+## Out of the box methods and attributes
+
+After using ```Mabrouk\Permission\Traits\HasPermission.php``` trait on specified models in ```permissions.php``` config file as mentioned above you will have additional methods and attributes on specified models. let's take User model as example and see methods usage such as the following:
+
+### Methods
+
+- ```$user->roles()``` This is the relationship method and how to access roles as a laravel normal relationship method.
+Put in mind that it's a polymorphic relationship so to get reversed relation ```$role->users()``` the ```users()``` method here will have the same name as specified model key in ```permissions.php``` config file under ```roleable_models``` key.
+
+- ```$user->permissions()``` This is the relationship method and how to access permissions as a laravel normal relationship method.
+
+- ```$user->subPermissions()``` This is the relationship method and how to access sub-permissions as a laravel normal relationship method.
+
+- ```$user->takeRole($role)``` You need to pass a role object to this method as the only one parameter it accepts in order to assign role to the user.
+
+- ```$user->leaveRole($role)``` You need to pass a role object to this method as the only one parameter it accepts in order to deassign role to the user.
+
+- ```$user->canAccess($subPermissionName)``` You need to pass a sub-permission name to this method as the only one parameter it accepts in order to check if the user have this specific sub-permission.
+
+- ```$user->canAccess($subPermissionName)``` You need to pass a sub-permission name to this method as the only one parameter it accepts in order to check if the user have this specific sub-permission.
+
+- ```$user->leaveAllRoles()``` This method don't accept any parameters and it just detach all roles related to the user.
+
+- ```User::HasPermissions($permissionsIds)``` This is a query scope method in order to filter users whom have specific permissions and you can fetch the result as usual as using ```->get()```, ```->first()``` or any other method as used to use.
+
+> note here that User model is used just as example and you can use the same functionality with any specified models in ```permissions.php``` config file after applying ```Mabrouk\Permission\Traits\HasPermission.php``` trait on it.
+
+### Attributes
+
+- ```$user->roles``` return a collection of a user assigned roles.
+
+-  ```$user->permissions``` return a collection of a user assigned permissions.
+
+-  ```$user->subPermissions``` return a collection of a user assigned sub-permissions.
+
+-  ```$user->SubPermissionsNames``` return an array of a user assigned sub-permissions full names.
 
 ## Out of the box models
 
 We have 4 basic models to deal with:
 
 - ```PermissionGroup``` have full crud with translatable name
-- ```Permission``` only index, // show and update of translatable description and display name only. It depends on your project models names.
+- ```Permission``` ==> only index, show and update of translatable description and display name only. It depends on your project models names.
 - ```SubPermission``` with no separate crud functionality. usually it's one of (view, create, edit, delete).
 - ```Role``` have full crud with translatable name and description
 
@@ -244,7 +292,7 @@ class SubPermissionResource extends JsonResource
 }
 ```
 
-- RoleResource
+- RoleResource ==> Used in role crud except index
 
 ```php
 <?php
@@ -273,7 +321,7 @@ class RoleResource extends JsonResource
 }
 ```
 
-- RoleSimpleResource
+- RoleSimpleResource ==> used in roles index only
 
 ```php
 <?php

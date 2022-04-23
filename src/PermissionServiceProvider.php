@@ -3,6 +3,7 @@
 namespace Mabrouk\Permission;
 
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Mabrouk\Permission\Console\Commands\PermissionSeedCommand;
@@ -66,7 +67,7 @@ class PermissionServiceProvider extends ServiceProvider
              */
             $this->publishes([
                 __DIR__ . '/config/permissions.php' => config_path('permissions.php'), // ? Config
-                __DIR__ . '/resources/lang' => resource_path('lang'), // ? Static translations
+                __DIR__ . '/resources/lang' => App::langPath(), // ? Static translations
             ]);
 
             $this->app->make(Router::class)

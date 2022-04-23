@@ -103,7 +103,7 @@ class RouteInvestigator
     public function permissionableRoutes()
     {
         return collect(Route::getRoutes()->get())->filter(function ($route) {
-            return ! \str_starts_with($route->uri(), '_') && $this->routeIsPermissionable($route);
+            return $this->routeIsPermissionable($route);
         });
     }
 
@@ -114,7 +114,7 @@ class RouteInvestigator
     public function routeIsPermissionable(Router $route) : bool
     {
         for ($i = 0; $i < \count($this->excludedRoutes) ; $i++) {
-            if (Str::contains($route->uri(), $this->excludedRoutes[$i])) {
+            if (\str_starts_with($route->uri(), '_') || Str::contains($route->uri(), $this->excludedRoutes[$i])) {
                 return false;
             }
         }

@@ -48,7 +48,7 @@ class PermissionSetupCommand extends Command
                 $this->info('Overwriting configuration file...');
                 $this->publishConfiguration(true);
             } else {
-                $this->info('Existing configuration was not overwritten');
+                $this->info('Existing configuration is not overwritten');
             }
         }
 

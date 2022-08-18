@@ -28,7 +28,7 @@ return [
     | Project owner model
     |--------------------------------------------------------------------------
     |
-    | If you have multible 'roleable_models' defined in above array, the you need
+    | If you have multible 'roleable_models' defined in above array, then you need
     | to define where the project owner person belongs to exactly as this model
     | will have always the upper hand over the rest of specified models in
     | 'roleable_models'.

@@ -113,9 +113,7 @@ Put in mind that it's a polymorphic relationship so to get reversed relation ```
 
 - ```$user->takeRole($role)``` You need to pass a role object to this method as the only one parameter it accepts in order to assign role to the user.
 
-- ```$user->leaveRole($role)``` You need to pass a role object to this method as the only one parameter it accepts in order to deassign role to the user.
-
-- ```$user->canAccess($subPermissionName)``` You need to pass a sub-permission name to this method as the only one parameter it accepts in order to check if the user have this specific sub-permission.
+- ```$user->leaveRole($role)``` You need to pass a role object to this method as the only one parameter it accepts in order to deassign role from the user.
 
 - ```$user->canAccess($subPermissionName)``` You need to pass a sub-permission name to this method as the only one parameter it accepts in order to check if the user have this specific sub-permission.
 
@@ -165,10 +163,10 @@ Route::apiResource('roles', RoleController::class);
 
 ## What else?
 
-You are one step away from handling your project permissions with only running below command after adding any additional routes under specified base urls defined in permissions.php config file.
+You are one step away from handling your project permissions with only running below command after adding any additional routes under specified base urls defined in ```permissions.php``` config file.
 
 #### Note:
-> You need to run below command after adding any new routes related to ```base_urls``` you specified in config file in order to add its suitable permissions.
+> You need to run below command after adding or modifying any routes related to ```base_urls``` you specified in config file in order to add or modify its suitable permissions.
 
 ```bash
 php artisan permission:seed

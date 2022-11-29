@@ -2,6 +2,7 @@
 
 namespace Mabrouk\Permission\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PermissionUpdateRequest extends FormRequest
@@ -23,20 +24,26 @@ class PermissionUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        // if ($this->exists('name') && $this->name != null) {
-        //     request()->display_name = $this->name;
-        // }
+        $this->localeAttribute = $this->locale ?? request()->locale ?? config('app.fallback_locale');
+
         return [
-            'name' => 'sometimes|string|min:3|max:191',
+            'name' => [
+                'sometimes',
+                'string',
+                'min:3',
+                'max:191',
+                Rule::unique('permission_translations', 'display_name')->where(function ($query) {
+                    return $query->where('locale', $this->localeAttribute)
+                        ->where('permission_translations.id', '!=', translation_id(request()->permission));
+                }),
+            ],
             'description' => 'nullable|string|max:10000',
         ];
     }
 
     public function getValidatorInstance()
     {
-        if ($this->exists('name')) {
-            $this->merge(['display_name' => $this->name]);
-        }
+        request()->merge(['display_name' => $this->name ?? $this->permission->name]);
         return parent::getValidatorInstance();
     }
 
@@ -44,8 +51,8 @@ class PermissionUpdateRequest extends FormRequest
     {
         $currentTranslationNamespace = config('translatable.translation_models_path');
         config(['translatable.translation_models_path' => 'Mabrouk\Permission\Models']);
-        $this->permission->update([]);
+        request()->permission->update([]);
         config(['translatable.translation_models_path' => $currentTranslationNamespace]);
-        return $this->permission->refresh();
+        return request()->permission->refresh();
     }
 }

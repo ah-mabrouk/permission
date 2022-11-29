@@ -18,7 +18,7 @@ class CreatePermissionTranslationsTable extends Migration
             $table->unsignedBigInteger('permission_id');
 
             $table->string('locale')->index();
-            $table->string('display_name')->unique();
+            $table->string('display_name');
             $table->text('description')->nullable();
 
             $table->timestamps();

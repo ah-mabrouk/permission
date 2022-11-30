@@ -18,7 +18,7 @@ class CreateRoleTranslationsTable extends Migration
             $table->unsignedBigInteger('role_id');
 
             $table->string('locale')->index();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->text('description')->nullable();
 
             $table->timestamps();

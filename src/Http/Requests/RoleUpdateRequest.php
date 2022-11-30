@@ -2,6 +2,7 @@
 
 namespace Mabrouk\Permission\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,8 +26,16 @@ class RoleUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'sometimes|string|min:3|max:191|unique:role_translations,name,' . translation_id($this->role),
-            // 'description' => 'nullable|string|max:10000',
+            'name' => [
+                'sometimes',
+                'string',
+                'min:3',
+                'max:191',
+                Rule::unique('role_translations', 'name')->where(function ($query) {
+                    return $query->where('role_translations.role_id', '!=', request()->role->id);
+                }),
+            ],
+            'description' => 'nullable|string|max:10000',
             'permissions' => 'sometimes|array',
             'permissions.*.id' => 'required|integer|distinct|exists:permissions,id',
             'permissions.*.sub_permissions' => 'nullable|array',
@@ -34,14 +43,18 @@ class RoleUpdateRequest extends FormRequest
         ];
     }
 
+    public function getValidatorInstance()
+    {
+        request()->locale = request()->input('locale');
+        return parent::getValidatorInstance();
+    }
+
     public function updateRole()
     {
         $currentTranslationNamespace = config('translatable.translation_models_path');
         config(['translatable.translation_models_path' => 'Mabrouk\Permission\Models']);
         DB::transaction(function () {
-            $this->role->update([
-                'id' => $this->role->id,
-            ]);
+            $this->role->update([]);
             $this->updatePermissions();
         });
         config(['translatable.translation_models_path' => $currentTranslationNamespace]);

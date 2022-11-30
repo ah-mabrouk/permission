@@ -24,8 +24,6 @@ class PermissionUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $this->localeAttribute = $this->input('locale') ?? config('app.fallback_locale');
-
         return [
             'name' => [
                 'sometimes',
@@ -33,8 +31,7 @@ class PermissionUpdateRequest extends FormRequest
                 'min:3',
                 'max:191',
                 Rule::unique('permission_translations', 'display_name')->where(function ($query) {
-                    return $query->where('locale', $this->localeAttribute)
-                        ->where('permission_translations.id', '!=', translation_id(request()->permission));
+                    return $query->where('permission_translations.permission_id', '!=', request()->permission->id);
                 }),
             ],
             'description' => 'nullable|string|max:10000',
@@ -43,10 +40,10 @@ class PermissionUpdateRequest extends FormRequest
 
     public function getValidatorInstance()
     {
+        request()->locale = request()->input('locale');
         request()->merge([
-            'locale' => $this->localeAttribute,
             'display_name' => $this->name ?? $this->permission->name,
-            'description' => $this->description ?? $this->permission->description,
+            'description' => $this->description,
         ]);
         return parent::getValidatorInstance();
     }

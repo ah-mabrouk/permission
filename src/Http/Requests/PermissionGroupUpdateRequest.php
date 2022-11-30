@@ -2,6 +2,7 @@
 
 namespace Mabrouk\Permission\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Mabrouk\Permission\Models\Permission;
 use Illuminate\Foundation\Http\FormRequest;
@@ -26,10 +27,24 @@ class PermissionGroupUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'sometimes|string|min:2|max:191|unique:permission_group_translations,name,' . translation_id($this->permission_group),
+            'name' => [
+                'sometimes',
+                'string',
+                'min:2',
+                'max:191',
+                Rule::unique('permission_group_translations', 'name')->where(function ($query) {
+                    return $query->where('permission_group_translations.permission_group_id', '!=', request()->permission_group->id);
+                }),
+            ],
             'permissions' => 'sometimes|array',
             'permissions.*' => 'required|exists:permissions,id',
         ];
+    }
+
+    public function getValidatorInstance()
+    {
+        request()->locale = request()->input('locale');
+        return parent::getValidatorInstance();
     }
 
     public function updatePermissionGroup()
@@ -38,9 +53,7 @@ class PermissionGroupUpdateRequest extends FormRequest
         config(['translatable.translation_models_path' => 'Mabrouk\Permission\Models']);
         DB::transaction(function () {
             if ($this->exists('name')) {
-                $this->permission_group->update([
-                    'id' => $this->permission_group->id,
-                ]);
+                $this->permission_group->update([]);
             }
             $this->updateGroupPermissions();
         });

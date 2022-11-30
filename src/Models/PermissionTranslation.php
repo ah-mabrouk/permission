@@ -32,7 +32,7 @@ class PermissionTranslation extends Model
 
     private function prepareDisplayName($value)
     {
-        $name = $this->permission->name;
+        $name = $value;
         $segments = collect(\explode('/', $name))->filter(function ($segment) {
             return ! Str::contains($segment, '{');
         })->flatten()->toArray();

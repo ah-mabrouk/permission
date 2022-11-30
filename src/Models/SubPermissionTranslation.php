@@ -30,6 +30,6 @@ class SubPermissionTranslation extends Model
 
     private function prepareDisplayName($value)
     {
-        return \explode('_', $this->subPermission->name)[1];
+        return \explode('_', $value)[1];
     }
 }

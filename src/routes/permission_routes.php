@@ -6,6 +6,7 @@ Route::group([
     'middleware' => [
         'auth:api',
         'permission-officer',
+        'translatable',
     ]
 ], function () {
     Route::apiResource('permission-groups', PermissionGroupController::class);

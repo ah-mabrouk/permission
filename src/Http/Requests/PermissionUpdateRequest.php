@@ -24,7 +24,7 @@ class PermissionUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $this->localeAttribute = $this->locale ?? request()->locale ?? config('app.fallback_locale');
+        $this->localeAttribute = $this->input('locale') ?? config('app.fallback_locale');
 
         return [
             'name' => [
@@ -43,7 +43,11 @@ class PermissionUpdateRequest extends FormRequest
 
     public function getValidatorInstance()
     {
-        request()->merge(['display_name' => $this->name ?? $this->permission->name]);
+        request()->merge([
+            'locale' => $this->localeAttribute,
+            'display_name' => $this->name ?? $this->permission->name,
+            'description' => $this->description ?? $this->permission->description,
+        ]);
         return parent::getValidatorInstance();
     }
 

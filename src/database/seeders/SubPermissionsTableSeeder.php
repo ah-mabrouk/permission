@@ -20,7 +20,7 @@ class SubPermissionsTableSeeder extends Seeder
         Permission::all()->each(function ($permission) use ($investigator) {
             $investigator->createSubPermissionsOf($permission)->each(function ($subPermission) {
                 SubPermission::create($subPermission)->translate([
-                    'display_name' => $subPermission,
+                    'display_name' => $subPermission['name'],
                 ]);
             });
         });

@@ -20,7 +20,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $paginationLength = pagination_length('Permission');
+        $paginationLength = pagination_length(Permission::class);
         $permissions = Permission::paginate($paginationLength);
         return PermissionResource::collection($permissions);
     }

@@ -21,7 +21,7 @@ class PermissionGroupController extends Controller
      */
     public function index()
     {
-        $paginationLength = pagination_length('PermissionGroup');
+        $paginationLength = pagination_length(PermissionGroup::class);
         $permissionGroups = PermissionGroup::paginate($paginationLength);
         return PermissionGroupResource::collection($permissionGroups);
     }

@@ -24,7 +24,7 @@ class RoleController extends Controller
      */
     public function index(RoleFilter $filters)
     {
-        $paginationLength = pagination_length('Role');
+        $paginationLength = pagination_length(Role::class);
         $roles = Role::filter($filters)->paginate($paginationLength);
         return RoleSimpleResource::collection($roles);
     }

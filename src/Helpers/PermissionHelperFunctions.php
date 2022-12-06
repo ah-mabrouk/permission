@@ -29,7 +29,7 @@ if (! function_exists('class_name_of')) {
 if (! function_exists('pagination_length')) {
     function pagination_length($modelName, $length = 20) {
         $paginationLength = request()->pagination;
-        $model = class_name_of($modelName, true);
+        $model = class_name_of($modelName, ! \str_contains($modelName, "\\"));
         if ($paginationLength == 'all') {
             $modelRaws = $model::count();
             return $modelRaws <= 500 ? $modelRaws : 500;

@@ -27,16 +27,16 @@ Trait HasPermission
 
     public function permissions()
     {
-        return Permission::where(function ($query1) {
-            $query1->whereHas('roles', function ($query2) {
-                $query2->whereIn('roles.id', $this->roles->pluck('id')->flatten()->toArray());
-            });
-        })->distinct();
+        return Permission::whereIn('permissions.id', $this->roles->map(function ($role) {
+            return $role->permissionsIds;
+        })->flatten()->toArray())->distinct();
     }
 
     public function subPermissions()
     {
-        return SubPermission::whereIn('permission_id', $this->permissions()->pluck('id')->flatten()->toArray());
+        return SubPermission::whereIn('sub_permissions.id', $this->roles->map(function ($role) {
+            return $role->subPermissionsIds;
+        })->flatten()->toArray())->distinct();
     }
 
     public function takeRole(Role $role)

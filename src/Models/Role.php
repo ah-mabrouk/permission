@@ -100,11 +100,11 @@ class Role extends Model
         switch (true) {
             case $this->id == 0:
                 $response['message'] = __('mabrouk/permission/roles.cant_destroy_super_admin_role');
-                $this->response['response_code'] = 403;
+                $this->response['response_code'] = 409;
                 break;
             case (bool) $this->users()->count() :
                 $response['message'] = __('mabrouk/permission/roles.cant_destroy');
-                $response['response_code'] = 403;
+                $response['response_code'] = 409;
             break;
         }
         if ($response['response_code'] == 200) {

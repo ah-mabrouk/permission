@@ -81,7 +81,7 @@ class PermissionGroupController extends Controller
         if ($permissionGroup->permissions()->count() > 0) {
             return response([
                 'message' => __('mabrouk/permission/permission_groups.cant_destroy'),
-            ], 422);
+            ], 409);
         }
         $permissionGroup->deleteTranslations()->delete();
         return response([

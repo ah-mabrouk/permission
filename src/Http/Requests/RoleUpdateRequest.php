@@ -37,7 +37,7 @@ class RoleUpdateRequest extends FormRequest
             ],
             'description' => 'nullable|string|max:10000',
             'permissions' => 'sometimes|array',
-            'permissions.*.id' => 'required|integer|distinct|exists:permissions,id',
+            'permissions.*.id' => 'required_with:permissions|integer|distinct|exists:permissions,id',
             'permissions.*.sub_permissions' => 'nullable|array',
             'permissions.*.sub_permissions.*' => 'nullable|integer|distinct|exists:sub_permissions,id',
         ];
@@ -66,7 +66,9 @@ class RoleUpdateRequest extends FormRequest
         if ($this->exists('permissions') && $this->role->id != 0) {
             $permissions = [];
             for ($i = 0; $i < \count($this->permissions); $i++) {
-                $permissions[$this->permissions[$i]['id']] = $this->permissions[$i]['sub_permissions'];
+                if (\in_array('id', \array_keys($this->permissions[$i])) && \in_array('sub_permissions', \array_keys($this->permissions[$i]))) {
+                    $permissions[$this->permissions[$i]['id']] = \in_array('sub_permissions', \array_keys($this->permissions[$i])) ?  $this->permissions[$i]['sub_permissions'] : [];
+                }
             }
             $this->role->syncPermissions($permissions);
         }

@@ -14,13 +14,15 @@ class PermissionOfficerMiddleware
         'DELETE' => 'delete',
     ];
 
-    public $baseUrls;
+    public array $baseUrls;
+    public array $excludedRoutes;
+    public array $subPermissionsNames;
 
     public function __construct()
     {
         $this->baseUrls = config('permissions.base_urls') ?? [];
         $this->excludedRoutes = config('permissions.excluded_routes') ?? [];
-        $this->subPermissionsNames = optional($this->authUser())->subPermissionsNames ?? [];
+        $this->subPermissionsNames = $this->authUser()?->subPermissionsNames ?? [];
     }
 
     private function authUser()

@@ -7,6 +7,8 @@ use Mabrouk\Permission\Models\PermissionGroup;
 
 class PermissionGroupStoreRequest extends FormRequest
 {
+    public PermissionGroup $permissionGroup;
+
     /**
      * Determine if the user is authorized to make this request.
      *

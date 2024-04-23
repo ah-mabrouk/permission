@@ -45,7 +45,7 @@ class RoleUpdateRequest extends FormRequest
 
     public function getValidatorInstance()
     {
-        request()->locale = request()->input('locale');
+        $this->merge(['locale' => request()->input('locale')]);
         return parent::getValidatorInstance();
     }
 

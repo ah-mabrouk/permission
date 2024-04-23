@@ -109,6 +109,7 @@ class Role extends Model
         }
         if ($response['response_code'] == 200) {
             $this->permissions()->sync([]);
+            $this->deleteTranslations();
             $this->delete();
         }
         $this->response = $response;

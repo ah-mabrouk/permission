@@ -7,6 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class RoleStoreRequest extends FormRequest
 {
+    public Role $role;
+
     /**
      * Determine if the user is authorized to make this request.
      *

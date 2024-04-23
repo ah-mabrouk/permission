@@ -6,6 +6,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Mabrouk\Permission\Models\Permission;
 use Illuminate\Foundation\Http\FormRequest;
+use Mabrouk\Translatable\Rules\UniqueForLocale;
 
 class PermissionGroupUpdateRequest extends FormRequest
 {
@@ -32,9 +33,7 @@ class PermissionGroupUpdateRequest extends FormRequest
                 'string',
                 'min:2',
                 'max:191',
-                Rule::unique('permission_group_translations', 'name')->where(function ($query) {
-                    return $query->where('permission_group_translations.permission_group_id', '!=', request()->permission_group->id);
-                }),
+                new UniqueForLocale(request()->permission_group),
             ],
             'permissions' => 'sometimes|array',
             'permissions.*' => 'required|exists:permissions,id',

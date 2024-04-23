@@ -2,9 +2,9 @@
 
 namespace Mabrouk\Permission\Http\Requests;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Http\FormRequest;
+use Mabrouk\Translatable\Rules\UniqueForLocale;
 
 class RoleUpdateRequest extends FormRequest
 {
@@ -31,9 +31,7 @@ class RoleUpdateRequest extends FormRequest
                 'string',
                 'min:3',
                 'max:191',
-                Rule::unique('role_translations', 'name')->where(function ($query) {
-                    return $query->where('role_translations.role_id', '!=', request()->role->id);
-                }),
+                new UniqueForLocale(request()->role),
             ],
             'description' => 'nullable|string|max:10000',
             'permissions' => 'sometimes|array',

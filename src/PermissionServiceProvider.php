@@ -93,10 +93,11 @@ class PermissionServiceProvider extends ServiceProvider
     protected function migrationFiles()
     {
         $migrationFiles = [];
+        $basePath = $this->migrationsPublishPath();
 
         foreach ($this->packageMigrations as $migrationName) {
             if (! $this->migrationExists($migrationName)) {
-                $migrationFiles[__DIR__ . "/database/migrations/{$migrationName}.php.stub"] = database_path('migrations/' . date('Y_m_d_His', time()) . "_{$migrationName}.php");
+                $migrationFiles[__DIR__ . "/database/migrations/{$migrationName}.php.stub"] = $basePath . date('Y_m_d_His', time()) . "_{$migrationName}.php";
             }
         }
         return $migrationFiles;
@@ -104,7 +105,7 @@ class PermissionServiceProvider extends ServiceProvider
 
     protected function migrationExists($migrationName)
     {
-        $path = database_path('migrations/');
+        $path = $this->migrationsPublishPath();
         $files = scandir($path);
         $pos = false;
         foreach ($files as &$value) {
@@ -112,5 +113,11 @@ class PermissionServiceProvider extends ServiceProvider
             if ($pos !== false) return true;
         }
         return false;
+    }
+
+    protected function migrationsPublishPath()
+    {
+        $migrationSubFolder = config('permissions.migration_sub_folder', '');
+        return database_path('migrations/' . $migrationSubFolder . '/');
     }
 }

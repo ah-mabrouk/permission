@@ -134,4 +134,19 @@ return [
     */
 
     'base_permission_group_id' => 1,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Package migrations sub-folder
+    |--------------------------------------------------------------------------
+    |
+    | This configuration key specifies the sub-folder within the database/migrations
+    | directory where the package's migration files will be published. If the key
+    | is left empty, the migration files will be published directly to the
+    | database/migrations directory. If a sub-folder is specified, the migration
+    | files will be published to that sub-folder.
+    |
+    */
+
+    'migration_sub_folder' => '',
 ];

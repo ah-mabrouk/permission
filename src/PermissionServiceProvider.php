@@ -47,8 +47,7 @@ class PermissionServiceProvider extends ServiceProvider
 
         $this->registerRoutes();
 
-        if ($this->app->runningInConsole()) {
-
+        if (config('permissions.should_run_command_from_console') && $this->app->runningInConsole()) {
             $this->commands([
                 PermissionSetupCommand::class,
                 PermissionSeedCommand::class,

@@ -149,4 +149,18 @@ return [
     */
 
     'migration_sub_folder' => '',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Should Run Command From Console
+    |--------------------------------------------------------------------------
+    |
+    | This configuration key determines whether the permission commands should
+    | be run from the console. By default, it is set to true, meaning the
+    | commands will run from the console. You can change this value by setting
+    | the PERMISSION_COMMAND_SHOULD_RUN_FROM_CONSOLE environment variable.
+    |
+    */
+
+    'should_run_command_from_console' => env('PERMISSION_COMMAND_SHOULD_RUN_FROM_CONSOLE', true),
 ];

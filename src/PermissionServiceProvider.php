@@ -47,31 +47,33 @@ class PermissionServiceProvider extends ServiceProvider
 
         $this->registerRoutes();
 
-        if (config('permissions.should_run_command_from_console') && $this->app->runningInConsole()) {
-            $this->commands([
-                PermissionSetupCommand::class,
-                PermissionSeedCommand::class,
-            ]);
-
-            /**
-             * Migrations
-             */
-            $migrationFiles = $this->migrationFiles();
-            if (\count($migrationFiles) > 0) {
-                $this->publishes($migrationFiles, 'permission_migrations');
-            }
-
-            /**
-             * Config and static translations
-             */
-            $this->publishes([
-                __DIR__ . '/config/permissions.php' => config_path('permissions.php'), // ? Config
-                __DIR__ . '/resources/lang' => App::langPath(), // ? Static translations
-            ]);
-
-            $this->app->make(Router::class)
-                ->aliasMiddleware('permission-officer', PermissionOfficerMiddleware::class);
+        if (!config('permissions.should_run_command_from_console') && $this->app->runningInConsole()) {
+            throw new \RuntimeException('Execution from the console is disabled.  You can enable it by setting SHOULD_RUN_COMMAND_FROM_CONSOLE to true in the .env file');
         }
+
+        $this->commands([
+            PermissionSetupCommand::class,
+            PermissionSeedCommand::class,
+        ]);
+
+        /**
+         * Migrations
+         */
+        $migrationFiles = $this->migrationFiles();
+        if (\count($migrationFiles) > 0) {
+            $this->publishes($migrationFiles, 'permission_migrations');
+        }
+
+        /**
+         * Config and static translations
+         */
+        $this->publishes([
+            __DIR__ . '/config/permissions.php' => config_path('permissions.php'), // ? Config
+            __DIR__ . '/resources/lang' => App::langPath(), // ? Static translations
+        ]);
+
+        $this->app->make(Router::class)
+            ->aliasMiddleware('permission-officer', PermissionOfficerMiddleware::class);
     }
 
     protected function registerRoutes()

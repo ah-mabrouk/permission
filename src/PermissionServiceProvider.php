@@ -47,10 +47,6 @@ class PermissionServiceProvider extends ServiceProvider
 
         $this->registerRoutes();
 
-        if (!config('permissions.should_run_command_from_console') && $this->app->runningInConsole()) {
-            throw new \RuntimeException('Execution from the console is disabled.  You can enable it by setting SHOULD_RUN_COMMAND_FROM_CONSOLE to true in the .env file');
-        }
-
         $this->commands([
             PermissionSetupCommand::class,
             PermissionSeedCommand::class,

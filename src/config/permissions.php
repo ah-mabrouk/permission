@@ -161,6 +161,4 @@ return [
     | the PERMISSION_COMMAND_SHOULD_RUN_FROM_CONSOLE environment variable.
     |
     */
-
-    'should_run_command_from_console' => env('PERMISSION_COMMAND_SHOULD_RUN_FROM_CONSOLE', true),
 ];

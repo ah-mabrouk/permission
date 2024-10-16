@@ -47,32 +47,29 @@ class PermissionServiceProvider extends ServiceProvider
 
         $this->registerRoutes();
 
-        if ($this->app->runningInConsole()) {
+        $this->commands([
+            PermissionSetupCommand::class,
+            PermissionSeedCommand::class,
+        ]);
 
-            $this->commands([
-                PermissionSetupCommand::class,
-                PermissionSeedCommand::class,
-            ]);
-
-            /**
-             * Migrations
-             */
-            $migrationFiles = $this->migrationFiles();
-            if (\count($migrationFiles) > 0) {
-                $this->publishes($migrationFiles, 'permission_migrations');
-            }
-
-            /**
-             * Config and static translations
-             */
-            $this->publishes([
-                __DIR__ . '/config/permissions.php' => config_path('permissions.php'), // ? Config
-                __DIR__ . '/resources/lang' => App::langPath(), // ? Static translations
-            ]);
-
-            $this->app->make(Router::class)
-                ->aliasMiddleware('permission-officer', PermissionOfficerMiddleware::class);
+        /**
+         * Migrations
+         */
+        $migrationFiles = $this->migrationFiles();
+        if (\count($migrationFiles) > 0) {
+            $this->publishes($migrationFiles, 'permission_migrations');
         }
+
+        /**
+         * Config and static translations
+         */
+        $this->publishes([
+            __DIR__ . '/config/permissions.php' => config_path('permissions.php'), // ? Config
+            __DIR__ . '/resources/lang' => App::langPath(), // ? Static translations
+        ]);
+
+        $this->app->make(Router::class)
+            ->aliasMiddleware('permission-officer', PermissionOfficerMiddleware::class);
     }
 
     protected function registerRoutes()
@@ -93,10 +90,11 @@ class PermissionServiceProvider extends ServiceProvider
     protected function migrationFiles()
     {
         $migrationFiles = [];
+        $basePath = $this->migrationsPublishPath();
 
         foreach ($this->packageMigrations as $migrationName) {
             if (! $this->migrationExists($migrationName)) {
-                $migrationFiles[__DIR__ . "/database/migrations/{$migrationName}.php.stub"] = database_path('migrations/' . date('Y_m_d_His', time()) . "_{$migrationName}.php");
+                $migrationFiles[__DIR__ . "/database/migrations/{$migrationName}.php.stub"] = $basePath . date('Y_m_d_His', time()) . "_{$migrationName}.php";
             }
         }
         return $migrationFiles;
@@ -104,7 +102,7 @@ class PermissionServiceProvider extends ServiceProvider
 
     protected function migrationExists($migrationName)
     {
-        $path = database_path('migrations/');
+        $path = $this->migrationsPublishPath();
         $files = scandir($path);
         $pos = false;
         foreach ($files as &$value) {
@@ -112,5 +110,11 @@ class PermissionServiceProvider extends ServiceProvider
             if ($pos !== false) return true;
         }
         return false;
+    }
+
+    protected function migrationsPublishPath()
+    {
+        $migrationSubFolder = config('permissions.migration_sub_folder', '');
+        return database_path('migrations/' . $migrationSubFolder . '/');
     }
 }

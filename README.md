@@ -74,11 +74,18 @@ The first option to apply it to ```api``` group for example will be more comfort
     ];
 ```
 
-* Now you need to run the following ```command``` in order to migrate package tables and publish ```permissions.php``` config file to config directory
+* Now you need to run the following ```command``` in order to publish package migrations and publish ```permissions.php``` config file to config directory
 
 ```bash
 php artisan permission:setup
 ```
+
+* Then you need to run the following ```command``` in order to migrate package tables
+
+```bash
+php artisan migrate
+```
+
 
 ## Configurations according to project needs
 

@@ -55,9 +55,6 @@ class PermissionSetupCommand extends Command
         $this->info('Caching configs...');
         $this->call('config:cache');
 
-        $this->info('Running migrate command...');
-        $this->call('migrate');
-
         return Command::SUCCESS;
     }
 

@@ -149,4 +149,15 @@ return [
     */
 
     'migration_sub_folder' => '',
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Force run seeder without questions
+    |--------------------------------------------------------------------------
+    |
+    | Force seeding package seeder without interruption by questions in terminal. The default value is true so, if you like to stop forcing the seeder to run just change the value to false
+    |
+    */
+
+    'force_seeding_without_questions' => true,
 ];

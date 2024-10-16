@@ -134,4 +134,15 @@ return [
     */
 
     'base_permission_group_id' => 1,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Run seeder in production env
+    |--------------------------------------------------------------------------
+    |
+    | if this true, the seed commands in PermissionSeedCommand can be run in the production env using the force option
+    |
+    */
+
+    'run_seed_in_production' => false,    
 ];

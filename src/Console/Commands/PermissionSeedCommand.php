@@ -4,7 +4,6 @@ namespace Mabrouk\Permission\Console\Commands;
 
 use Illuminate\Console\Command;
 use Database\Seeders\RoleableSeeder;
-use Illuminate\Support\Facades\File;
 
 class PermissionSeedCommand extends Command
 {
@@ -45,7 +44,13 @@ class PermissionSeedCommand extends Command
 
         config(['translatable.translation_models_path' => 'Mabrouk\Permission\Models']);
 
-        $this->call('db:seed', ['--class' => RoleableSeeder::class]);
+        $seedOptions = ['--class' => RoleableSeeder::class];
+
+        if (config('translatable.run_seed_in_production')) {
+            $seedOptions['--force'] = true;
+        }
+        
+        $this->call('db:seed', $seedOptions);
 
         config(['translatable.translation_models_path' => $currentTranslationNamespace]);
 

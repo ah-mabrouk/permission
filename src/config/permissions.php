@@ -152,12 +152,12 @@ return [
     
     /*
     |--------------------------------------------------------------------------
-    | Run seeder in production env
+    | Force run seeder without questions
     |--------------------------------------------------------------------------
     |
-    | if this true, the seed commands in PermissionSeedCommand can be run in the production env using the force option
+    | Force seeding package seeder without interruption by questions in terminal. The default value is true so, if you like to stop forcing the seeder to run just change the value to false
     |
     */
 
-    'run_seed_in_production' => false,
+    'force_seeding_without_questions' => true,
 ];

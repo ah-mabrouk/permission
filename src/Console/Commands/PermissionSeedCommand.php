@@ -46,7 +46,7 @@ class PermissionSeedCommand extends Command
 
         $seedOptions = ['--class' => RoleableSeeder::class];
 
-        if (config('translatable.run_seed_in_production')) {
+        if (config('permissions.force_seeding_without_questions')) {
             $seedOptions['--force'] = true;
         }
         

@@ -6,6 +6,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Mabrouk\Permission\Console\Commands\PermissionPublishRoutesCommand;
 use Mabrouk\Permission\Console\Commands\PermissionSeedCommand;
 use Mabrouk\Permission\Console\Commands\PermissionSetupCommand;
 use Mabrouk\Permission\Http\Middleware\PermissionOfficerMiddleware;
@@ -50,6 +51,7 @@ class PermissionServiceProvider extends ServiceProvider
         $this->commands([
             PermissionSetupCommand::class,
             PermissionSeedCommand::class,
+            PermissionPublishRoutesCommand::class,
         ]);
 
         /**
@@ -74,9 +76,11 @@ class PermissionServiceProvider extends ServiceProvider
 
     protected function registerRoutes()
     {
-        Route::group($this->routeConfiguration(), function () {
-            $this->loadRoutesFrom(__DIR__ . '/routes/permission_routes.php');
-        });
+        if (config('permissions.load_routes')) {
+            Route::group($this->routeConfiguration(), function () {
+                $this->loadRoutesFrom(__DIR__ . '/routes/permission_routes.php');
+            });
+        }
     }
 
     protected function routeConfiguration()

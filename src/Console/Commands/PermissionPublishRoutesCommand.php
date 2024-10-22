@@ -59,6 +59,8 @@ class PermissionPublishRoutesCommand extends Command
             '--provider' => 'Mabrouk\Permission\PermissionServiceProvider',
         ]);
 
+        exec('composer dump-autoload');
+
         $this->info('Routes have been published successfully.');
 
         return Command::SUCCESS;

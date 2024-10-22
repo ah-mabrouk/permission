@@ -41,7 +41,12 @@ class PermissionPublishRoutesCommand extends Command
         $routesPublishSubDirectory = config('permissions.routes_publish_subdirectory');
 
         if (File::exists(base_path("routes/{$routesPublishSubDirectory}permission_routes.php"))) {
-            $this->info("Routes have already been published in routes/{$routesPublishSubDirectory} directory.");
+            $this->warn("Routes have already been published in routes/{$routesPublishSubDirectory} directory.");
+            return Command::SUCCESS;
+        }
+
+        if (! $this->shouldPublishAlreadyLoadedRoutes()) {
+            $this->warn('Routes publishing is aborted.');
             return Command::SUCCESS;
         }
 
@@ -50,23 +55,23 @@ class PermissionPublishRoutesCommand extends Command
             base_path("routes/{$routesPublishSubDirectory}permission_routes.php")
         );
 
-        $this->publishConfiguration();
+        $this->callSilent('vendor:publish', [
+            '--provider' => 'Mabrouk\Permission\PermissionServiceProvider',
+        ]);
 
         $this->info('Routes have been published successfully.');
 
         return Command::SUCCESS;
     }
 
-    private function publishConfiguration($forcePublish = false)
+    private function shouldPublishAlreadyLoadedRoutes(): bool
     {
-        $params = [
-            '--provider' => 'Mabrouk\Permission\PermissionServiceProvider',
-        ];
-
-        if ($forcePublish === true) {
-            $params['--force'] = true;
+        if (config('permissions.load_routes')) {
+            return $this->confirm(
+                'Loading routes is enabled in the configuration file. Do you want to publish them anyway?',
+                false
+            );
         }
-
-        $this->call('vendor:publish', $params, new \Symfony\Component\Console\Output\NullOutput());
+         return true;
     }
 }

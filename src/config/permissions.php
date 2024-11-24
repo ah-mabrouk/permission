@@ -187,12 +187,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Middleware
+    | Middlewares
     |--------------------------------------------------------------------------
     |
     | This option allows you to specify the middlewares that should be applied to
     | the package routes. You can add middlewares to the array below.
     |
     */
-    'middleware' => [],
+    'middlewares' => [],
 ];

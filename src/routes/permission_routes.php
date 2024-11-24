@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group([
-    'middleware' => array_merge(config('permissions.middleware'), [
+    'middleware' => array_merge(config('permissions.middlewares'), [
         'auth:api',
         'permission-officer',
         'translatable',

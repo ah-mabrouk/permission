@@ -15,28 +15,18 @@ class PermissionGroupsTableSeeder extends Seeder
      */
     public function run()
     {
-        $permissionGroups = [
-            [
-                'name' => 'Basic Permissions',
-                'ar_name' => 'الصلاحيات الأساسية',
-            ],
-            [
-                'name' => 'Other Permissions',
-                'ar_name' => 'صلاحيات أخرى',
-            ],
-        ];
+        $permissionGroups = array_merge_recursive(
+            config('permissions.default_permission_group'),
+            config('permissions.additional_permission_groups')
+        );
 
         $currentPermissionGroupsInTable = PermissionGroupTranslation::pluck('name')->flatten()->toArray();
 
-        for ($i = 0; $i < \count($permissionGroups); $i++) {
-            if (! \in_array($permissionGroups[$i]['name'], $currentPermissionGroupsInTable)) {
-                $permissionGroup = PermissionGroup::create([])->translate([
-                    'name' => $permissionGroups[$i]['name'],
-                ], 'en');
-                if (\array_key_exists('ar_name', $permissionGroups[$i])) {
-                    $permissionGroup->translate([
-                        'name' => $permissionGroups[$i]['ar_name'],
-                    ], 'ar');
+        foreach ($permissionGroups['en'] as $index => $name) {
+            if (!\in_array($name, $currentPermissionGroupsInTable)) {
+                $permissionGroup = PermissionGroup::create([])->translate(['name' => $name], 'en');
+                if (isset($permissionGroups['ar'][$index])) {
+                    $permissionGroup->translate(['name' => $permissionGroups['ar'][$index]], 'ar');
                 }
             }
         }

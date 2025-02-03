@@ -195,4 +195,38 @@ return [
     |
     */
     'middlewares' => [],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default Permission Group
+    |--------------------------------------------------------------------------
+    |
+    | This configuration key specifies the default permission group that will
+    | be used to add all auto-generated permissions as children. You can modify
+    | the value here to reflect changes if needed. This currently support en and ar languages.
+    |
+    */
+    'default_permission_group' => [
+        'en' => [
+            'Basic Permissions',
+        ],
+        'ar' => [
+            'الصلاحيات الأساسية',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Additional Permission Groups
+    |--------------------------------------------------------------------------
+    |
+    | This configuration key specifies additional permission groups that can be
+    | used in the project. You can add more permission groups here as needed
+    | This currently support en and ar languages.
+    |
+    */
+    'additional_permission_groups' => [
+        'en' => [],
+        'ar' => [],
+    ],
 ];

@@ -87,9 +87,9 @@ class Role extends Model
 
     public function getSubPermissionsIdsAttribute()
     {
-        return $this->rolePermissions()->get()->map(function ($rolePermission) {
-            return $rolePermission->subPermissions()->pluck('sub_permissions.id')->toArray();
-        })->flatten()->toArray();
+        return $this->rolePermissions()->with('subPermissions:id')->get()->flatMap(function ($rolePermission) {
+            return $rolePermission->subPermissions->pluck('id');
+        })->toArray();
     }
 
     public function remove()

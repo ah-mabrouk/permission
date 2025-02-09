@@ -20,9 +20,6 @@ class PermissionOfficerMiddleware
 
     public function __construct()
     {
-        $this->baseUrls = config('permissions.base_urls') ?? [];
-        $this->excludedRoutes = config('permissions.excluded_routes') ?? [];
-        $this->subPermissionsNames = $this->authUser()?->subPermissionsNames ?? [];
     }
 
     private function authUser()
@@ -39,6 +36,9 @@ class PermissionOfficerMiddleware
      */
     public function handle($request, Closure $next)
     {
+        $this->baseUrls = config('permissions.base_urls') ?? [];
+        $this->excludedRoutes = config('permissions.excluded_routes') ?? [];
+        $this->subPermissionsNames = $this->authUser()?->subPermissionsNames ?? [];
         $routeSubPermissionName = $this->subPermissionNameFromRoute(
             $this->sanitizeBaseUrl($request->route()->uri()),
             $request->route()->methods()[0]

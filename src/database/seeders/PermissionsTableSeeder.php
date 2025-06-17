@@ -18,7 +18,7 @@ class PermissionsTableSeeder extends Seeder
         $investigator->createPermissions()->map(function ($permission) {
             $permission->translate([
                 'display_name' => $permission->name,
-            ], 'en');
+            ], config('translatable.fallback_locale'));
             return $permission->refresh();
         });
     }

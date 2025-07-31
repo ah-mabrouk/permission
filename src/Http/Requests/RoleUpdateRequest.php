@@ -72,4 +72,16 @@ class RoleUpdateRequest extends FormRequest
         }
         return $this;
     }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => __('mabrouk/permission/roles.attributes.name'),
+            'description' => __('mabrouk/permission/roles.attributes.description'),
+            'permissions' => __('mabrouk/permission/roles.attributes.permissions'),
+            'permissions.*.id' => __('mabrouk/permission/roles.attributes.permission'),
+            'permissions.*.sub_permissions' => __('mabrouk/permission/roles.attributes.sub_permissions'),
+            'permissions.*.sub_permissions.*' => __('mabrouk/permission/roles.attributes.sub_permission'),
+        ];
+    }
 }

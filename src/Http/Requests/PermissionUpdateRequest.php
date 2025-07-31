@@ -54,4 +54,12 @@ class PermissionUpdateRequest extends FormRequest
         config(['translatable.translation_models_path' => $currentTranslationNamespace]);
         return request()->permission->refresh();
     }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => __('mabrouk/permission/permissions.attributes.name'),
+            'description' => __('mabrouk/permission/permissions.attributes.description'),
+        ];
+    }
 }

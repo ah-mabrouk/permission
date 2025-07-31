@@ -71,4 +71,13 @@ class PermissionGroupUpdateRequest extends FormRequest
         }
         return $this;
     }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => __('mabrouk/permission/permission_groups.attributes.name'),
+            'permissions' => __('mabrouk/permission/permission_groups.attributes.permissions'),
+            'permissions.*' => __('mabrouk/permission/permission_groups.attributes.permission'),
+        ];
+    }
 }

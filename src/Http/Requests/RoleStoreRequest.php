@@ -40,4 +40,12 @@ class RoleStoreRequest extends FormRequest
         config(['translatable.translation_models_path' => $currentTranslationNamespace]);
         return $this->role->refresh();
     }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => __('mabrouk/permission/roles.attributes.name'),
+            'description' => __('mabrouk/permission/roles.attributes.description'),
+        ];
+    }
 }

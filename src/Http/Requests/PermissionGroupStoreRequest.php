@@ -39,4 +39,11 @@ class PermissionGroupStoreRequest extends FormRequest
         config(['translatable.translation_models_path' => $currentTranslationNamespace]);
         return $this->permissionGroup->refresh();
     }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => __('mabrouk/permission/permission_groups.attributes.name'),
+        ];
+    }
 }

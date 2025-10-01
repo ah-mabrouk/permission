@@ -27,13 +27,23 @@ class RolesTableSeeder extends Seeder
 
         for ($i = 0; $i < \count($roles); $i++) {
             if (! \in_array($roles[$i]['name'], $currentRolesInTable)) {
+                
+                $checkFirstRole = Role::where('id', 0)->first();
+
+                if ($roles[$i]['name'] == 'Super Admin Role' && $checkFirstRole) {
+                    continue;
+                }
+
                 $role = Role::create([]);
+
                 if ($roles[$i]['name'] == 'Super Admin Role') {
                     $role->update(['id' => 0]);
                 }
+    
                 $role->refresh()->translate([
                     'name' => $roles[$i]['name'],
                 ], 'en');
+
                 if (\array_key_exists('ar_name', $roles[$i])) {
                     $role->translate([
                         'name' => $roles[$i]['ar_name'],

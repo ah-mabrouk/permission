@@ -48,7 +48,7 @@ class SubPermission extends Model
 
     public function getCustomDisplayNameAttribute()
     {
-        return trans('mabrouk/permission/permissions.custom_sub_permission_display_name.' . $this->display_name);
+        return __('mabrouk/permission/permissions.custom_sub_permission_display_name.' . $this->display_name);
     }    
 
     ## Query Scope Methods

@@ -38,21 +38,22 @@ class RouteInvestigator
      */
     public function createPermissions() : collection
     {
-        $catalog = Lang::get('mabrouk/permission/permissions.custom_display_name', [], config('translatable.fallback_locale'));
-
-        $permissions = $this->permissionableRoutes->map(function ($route) use ($catalog) {
+        $permissions = $this->permissionableRoutes->map(function ($route) {
             $newPermissionObject = new Permission([
                 'permission_group_id' => config('permissions.base_permission_group_id'),
                 'url' => $this->sanitizeBaseUrl($route->uri()),
             ]);
             $newPermissionObject->name = ! Str::contains($newPermissionObject->url, '{') ? $newPermissionObject->url : $this->sanitizeRouteModelIdentifier($newPermissionObject->url);
+            
+            if (config('app.env') == 'local') {
+                $fallbackHasName = Lang::hasForLocale('mabrouk/permission/permissions.custom_display_name.' . $newPermissionObject->name, config('translatable.fallback_locale'));
 
-            $hasKey = is_array($catalog) && array_key_exists($newPermissionObject->name, $catalog);
+                $secondLocale = config('translatable.fallback_locale') == 'en' ? 'ar' : 'en';
 
-            if (!$hasKey) {
-                $msg = "Missing translation key [permissions.{$newPermissionObject->name}].";
+                $secondLocaleHasName = Lang::hasForLocale('mabrouk/permission/permissions.custom_display_name.' . $newPermissionObject->name, $secondLocale);
 
-                if (config('app.env') == 'local') {
+                if (!$fallbackHasName || !$secondLocaleHasName) {
+                    $msg = "Missing translation key [permissions.{$newPermissionObject->name}], Please check all lang files";
                     throw new \RuntimeException($msg);
                 }
             }

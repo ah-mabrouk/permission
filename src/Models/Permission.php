@@ -60,7 +60,7 @@ class Permission extends Model
 
     public function getCustomDisplayNameAttribute()
     {
-        return trans('mabrouk/permission/permissions.custom_display_name.' . $this->name);
+        return __('mabrouk/permission/permissions.custom_display_name.' . $this->name);
     }
 
     ## Query Scope Methods

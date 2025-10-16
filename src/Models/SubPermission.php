@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class SubPermission extends Model
 {
     use HasFactory, Translatable;
-
+    
     public $translatedAttributes = [
         'display_name',
     ];
@@ -45,6 +45,11 @@ class SubPermission extends Model
         }
         return false;
     }
+
+    public function getCustomDisplayNameAttribute()
+    {
+        return __('mabrouk/permission/permissions.custom_sub_permission_display_name.' . $this->display_name);
+    }    
 
     ## Query Scope Methods
 

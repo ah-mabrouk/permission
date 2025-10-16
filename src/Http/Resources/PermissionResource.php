@@ -16,7 +16,7 @@ class PermissionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->display_name,
+            'name' => $this->customDisplayName,
             'selected' => $this->isSelected,
             'description' => $this->description,
             'group' => new PermissionGroupSimpleResource($this->group),

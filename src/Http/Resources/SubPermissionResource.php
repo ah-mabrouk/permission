@@ -16,7 +16,7 @@ class SubPermissionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->display_name,
+            'name' => $this->customDisplayName,
             'selected' => $this->isSelected,
         ];
     }

@@ -58,6 +58,11 @@ class Permission extends Model
         return false;
     }
 
+    public function getCustomDisplayNameAttribute()
+    {
+        return trans('mabrouk/permission/permissions.custom_display_name.' . $this->name);
+    }
+
     ## Query Scope Methods
 
     ## Other Methods

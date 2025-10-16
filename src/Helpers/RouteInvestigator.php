@@ -2,10 +2,11 @@
 
 namespace Mabrouk\Permission\Helpers;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Routing\Route as Router;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Mabrouk\Permission\Models\Permission;
 
 class RouteInvestigator
@@ -37,14 +38,29 @@ class RouteInvestigator
      */
     public function createPermissions() : collection
     {
-        $permissions = $this->permissionableRoutes->map(function ($route) {
+        $catalog = Lang::get('mabrouk/permission/permissions.custom_display_name', [], config('translatable.fallback_locale'));
+
+        $permissions = $this->permissionableRoutes->map(function ($route) use ($catalog) {
             $newPermissionObject = new Permission([
                 'permission_group_id' => config('permissions.base_permission_group_id'),
                 'url' => $this->sanitizeBaseUrl($route->uri()),
             ]);
             $newPermissionObject->name = ! Str::contains($newPermissionObject->url, '{') ? $newPermissionObject->url : $this->sanitizeRouteModelIdentifier($newPermissionObject->url);
+
+            $hasKey = is_array($catalog) && array_key_exists($newPermissionObject->name, $catalog);
+
+            if (!$hasKey) {
+                $msg = "Missing translation key [permissions.{$newPermissionObject->name}].";
+
+                if (config('app.env') == 'local') {
+                    throw new \RuntimeException($msg);
+                }
+            }
+            
             return $newPermissionObject;
-        })->unique('name')->filter(function ($permission) {
+        })
+        ->unique('name')
+        ->filter(function ($permission) {
             return $permission->name != null && ! \in_array($permission->name, $this->existingPermissions->pluck('name')->flatten()->toArray());
         });
         return $this->saveBulkPermissions($permissions);

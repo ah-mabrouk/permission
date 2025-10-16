@@ -16,5 +16,5 @@ return [
         'create' => 'create',
         'edit' => 'edit',
         'delete' => 'delete',
-    ],    
+    ],
 ];

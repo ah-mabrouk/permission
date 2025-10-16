@@ -9,13 +9,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class SubPermission extends Model
 {
     use HasFactory, Translatable;
-
-    public const ROUTE_METHOD_MAP = [
-        'GET' => 'view',
-        'POST' => 'create',
-        'PUT' => 'edit',
-        'DELETE' => 'delete',
-    ];
     
     public $translatedAttributes = [
         'display_name',
@@ -55,9 +48,7 @@ class SubPermission extends Model
 
     public function getCustomDisplayNameAttribute()
     {
-        $routeMethod = request()->route()->methods()[0];
-
-        return trans('mabrouk/permission/permissions.custom_sub_permission_display_name.' . self::ROUTE_METHOD_MAP[$routeMethod]);
+        return trans('mabrouk/permission/permissions.custom_sub_permission_display_name.' . $this->display_name);
     }    
 
     ## Query Scope Methods

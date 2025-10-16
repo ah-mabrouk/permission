@@ -12,7 +12,7 @@ return [
     ],
 
     'custom_sub_permission_display_name' => [
-        'view' => 'عرض',
+        'view' => 'إظهار',
         'create' => 'إضافة',
         'edit' => 'تعديل',
         'delete' => 'حذف',

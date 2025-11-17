@@ -144,11 +144,6 @@ Trait HasPermission
         });
     }
 
-    public function hasCachedSubPermissionNames(): bool
-    {
-        return Cache::has($this->getSubPermissionsCacheKey());
-    }
-
     public function invalidateCachedSubPermissionNames(): void
     {
         Cache::forget($this->getSubPermissionsCacheKey());

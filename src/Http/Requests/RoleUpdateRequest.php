@@ -4,6 +4,7 @@ namespace Mabrouk\Permission\Http\Requests;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Http\FormRequest;
+use Mabrouk\Permission\Models\Role;
 use Mabrouk\Translatable\Rules\UniqueForLocale;
 
 class RoleUpdateRequest extends FormRequest
@@ -11,9 +12,8 @@ class RoleUpdateRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,9 +21,8 @@ class RoleUpdateRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => [
@@ -47,7 +46,7 @@ class RoleUpdateRequest extends FormRequest
         return parent::getValidatorInstance();
     }
 
-    public function updateRole()
+    public function updateRole(): Role
     {
         $currentTranslationNamespace = config('translatable.translation_models_path');
         config(['translatable.translation_models_path' => 'Mabrouk\Permission\Models']);
@@ -56,10 +55,11 @@ class RoleUpdateRequest extends FormRequest
             $this->updatePermissions();
         });
         config(['translatable.translation_models_path' => $currentTranslationNamespace]);
+
         return $this->role->refresh();
     }
 
-    public function updatePermissions()
+    public function updatePermissions(): self
     {
         if ($this->exists('permissions') && $this->role->id != 0) {
             $permissions = [];
@@ -70,6 +70,7 @@ class RoleUpdateRequest extends FormRequest
             }
             $this->role->syncPermissions($permissions);
         }
+
         return $this;
     }
 

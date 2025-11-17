@@ -85,10 +85,9 @@ class PermissionServiceProvider extends ServiceProvider
 
     protected function routeConfiguration()
     {
-        return [
-            'namespace' => 'Mabrouk\Permission\Http\Controllers',
-            'prefix' => config('permissions.package_routes_prefix'),
-        ];
+		return [
+			'prefix' => config('permissions.package_routes_prefix'),
+		];
     }
 
     protected function migrationFiles()

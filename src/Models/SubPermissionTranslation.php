@@ -4,6 +4,7 @@ namespace Mabrouk\Permission\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SubPermissionTranslation extends Model
 {
@@ -16,7 +17,7 @@ class SubPermissionTranslation extends Model
 
     ## Relations
 
-    public function subPermission()
+    public function subPermission(): BelongsTo
     {
         return $this->belongsTo(SubPermission::class, 'sub_permission_id');
     }
@@ -32,4 +33,10 @@ class SubPermissionTranslation extends Model
     {
         return \explode('_', $value)[1];
     }
+
+    ## Getters & Setters
+
+    ## Query Scope Methods
+
+    ## Other Methods
 }

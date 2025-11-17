@@ -3,8 +3,11 @@
 namespace Mabrouk\Permission\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Mabrouk\Translatable\Traits\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Permission extends Model
 {
@@ -28,22 +31,22 @@ class Permission extends Model
 
     ## Relations
 
-    public function roles()
+    public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(Role::class)->using(PermissionRole::class, 'permission_id', 'role_id');
+        return $this->belongsToMany(Role::class)->using(PermissionRole::class);
     }
 
-    public function group()
+    public function group(): BelongsTo
     {
         return $this->belongsTo(PermissionGroup::class, 'permission_group_id');
     }
 
-    public function permissionRoles()
+    public function permissionRoles(): HasMany
     {
         return $this->hasMany(PermissionRole::class, 'permission_id');
     }
 
-    public function subPermissions()
+    public function subPermissions(): HasMany
     {
         return $this->hasMany(SubPermission::class, 'permission_id');
     }

@@ -4,6 +4,7 @@ namespace Mabrouk\Permission\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PermissionGroupTranslation extends Model
 {
@@ -16,8 +17,14 @@ class PermissionGroupTranslation extends Model
 
     ## Relations
 
-    public function permissionGroup()
+    public function permissionGroup(): BelongsTo
     {
         return $this->belongsTo(PermissionGroup::class, 'permission_group_id');
     }
+
+    ## Getters & Setters
+
+    ## Query Scope Methods
+
+    ## Other Methods
 }

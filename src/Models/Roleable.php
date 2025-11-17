@@ -2,6 +2,8 @@
 
 namespace Mabrouk\Permission\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Roleable extends Pivot
@@ -16,13 +18,19 @@ class Roleable extends Pivot
 
     ## Relations
 
-    public function role()
+    public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
 
-    public function roleable()
+    public function roleable(): MorphTo
     {
         return $this->morphTo();
     }
+
+    ## Getters & Setters
+
+    ## Query Scope Methods
+
+    ## Other Methods
 }

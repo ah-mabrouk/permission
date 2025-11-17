@@ -17,24 +17,23 @@ class PermissionGroupController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $paginationLength = pagination_length(PermissionGroup::class);
         $permissionGroups = PermissionGroup::paginate($paginationLength);
+
         return PermissionGroupResource::collection($permissionGroups);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Mabrouk\Permission\Http\Requests\PermissionGroupStoreRequest  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(PermissionGroupStoreRequest $request)
     {
         $permissionGroup = $request->storePermissionGroup();
+
         return response([
             'message' => __('mabrouk/permission/permission_groups.store'),
             'permission_group' => new PermissionGroupResource($permissionGroup),
@@ -44,8 +43,6 @@ class PermissionGroupController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \Mabrouk\Permission\Models\PermissionGroup  $permissionGroup
-     * @return \Illuminate\Http\Response
      */
     public function show(PermissionGroup $permissionGroup)
     {
@@ -57,13 +54,11 @@ class PermissionGroupController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Mabrouk\Permission\Http\Requests\PermissionGroupUpdateRequest  $request
-     * @param  \Mabrouk\Permission\Models\PermissionGroup  $permissionGroup
-     * @return \Illuminate\Http\Response
      */
     public function update(PermissionGroupUpdateRequest $request, PermissionGroup $permissionGroup)
     {
         $permissionGroup = $request->updatePermissionGroup();
+
         return response([
             'message' => __('mabrouk/permission/permission_groups.update'),
             'permission_group' => new PermissionGroupResource($permissionGroup),
@@ -73,8 +68,6 @@ class PermissionGroupController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Mabrouk\Permission\Models\PermissionGroup  $permissionGroup
-     * @return \Illuminate\Http\Response
      */
     public function destroy(PermissionGroup $permissionGroup)
     {
@@ -83,6 +76,7 @@ class PermissionGroupController extends Controller
                 'message' => __('mabrouk/permission/permission_groups.cant_destroy'),
             ], 409);
         }
+
         $permissionGroup->deleteTranslations()->delete();
         return response([
             'message' => __('mabrouk/permission/permission_groups.destroy'),

@@ -6,6 +6,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Mabrouk\Permission\Models\Permission;
 use Illuminate\Foundation\Http\FormRequest;
+use Mabrouk\Permission\Models\PermissionGroup;
 use Mabrouk\Translatable\Rules\UniqueForLocale;
 
 class PermissionGroupUpdateRequest extends FormRequest
@@ -13,9 +14,8 @@ class PermissionGroupUpdateRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -23,9 +23,8 @@ class PermissionGroupUpdateRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => [
@@ -46,7 +45,7 @@ class PermissionGroupUpdateRequest extends FormRequest
         return parent::getValidatorInstance();
     }
 
-    public function updatePermissionGroup()
+    public function updatePermissionGroup(): PermissionGroup
     {
         $currentTranslationNamespace = config('translatable.translation_models_path');
         config(['translatable.translation_models_path' => 'Mabrouk\Permission\Models']);
@@ -57,10 +56,11 @@ class PermissionGroupUpdateRequest extends FormRequest
             $this->updateGroupPermissions();
         });
         config(['translatable.translation_models_path' => $currentTranslationNamespace]);
+
         return $this->permission_group->refresh();
     }
 
-    private function updateGroupPermissions()
+    private function updateGroupPermissions(): self
     {
         if ($this->exists('permissions')) {
             Permission::whereIn('id', $this->permissions)
@@ -69,6 +69,7 @@ class PermissionGroupUpdateRequest extends FormRequest
                     'permission_group_id' => $this->permission_group->id,
                 ]);
         }
+
         return $this;
     }
 

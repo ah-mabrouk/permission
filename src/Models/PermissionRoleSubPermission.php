@@ -2,6 +2,7 @@
 
 namespace Mabrouk\Permission\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class PermissionRoleSubPermission extends Pivot
@@ -15,12 +16,12 @@ class PermissionRoleSubPermission extends Pivot
 
     ## Relations
 
-    public function permissionRole()
+    public function permissionRole(): BelongsTo
     {
         return $this->belongsTo(PermissionRole::class, 'permission_role_id');
     }
 
-    public function subPermission()
+    public function subPermission(): BelongsTo
     {
         return $this->belongsTo(SubPermission::class, 'sub_permission_id');
     }

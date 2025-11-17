@@ -4,6 +4,7 @@ namespace Mabrouk\Permission\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class RoleTranslation extends Model
 {
@@ -17,8 +18,14 @@ class RoleTranslation extends Model
 
     ## Relations
 
-    public function role()
+    public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
+
+    ## Getters & Setters
+
+    ## Query Scope Methods
+
+    ## Other Methods
 }

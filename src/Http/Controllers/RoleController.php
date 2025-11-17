@@ -19,25 +19,23 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Mabrouk\Permission\Admin\RoleFilter  $filters
-     * @return \Illuminate\Http\Response
      */
     public function index(RoleFilter $filters)
     {
         $paginationLength = pagination_length(Role::class);
         $roles = Role::filter($filters)->paginate($paginationLength);
+
         return RoleSimpleResource::collection($roles);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Mabrouk\Permission\Http\Requests\RoleStoreRequest  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(RoleStoreRequest $request)
     {
         $role = $request->storeRole();
+
         return response([
             'message' => __('mabrouk/permission/roles.store'),
             'role' => new RoleResource($role),
@@ -47,8 +45,6 @@ class RoleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \Mabrouk\Permission\Models\Role  $role
-     * @return \Illuminate\Http\Response
      */
     public function show(Role $role)
     {
@@ -60,13 +56,11 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Mabrouk\Permission\Http\Requests\RoleUpdateRequest  $request
-     * @param  \Mabrouk\Permission\Models\Role  $role
-     * @return \Illuminate\Http\Response
      */
     public function update(RoleUpdateRequest $request, Role $role)
     {
         $role = $request->updateRole();
+
         return response([
             'message' => __('mabrouk/permission/roles.update'),
             'role' => new RoleResource($role),
@@ -76,12 +70,11 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Mabrouk\Permission\Models\Role  $role
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Role $role)
     {
         $role = $role->remove();
+
         return response([
             'message' => $role->response['message'],
         ], $role->response['response_code']);

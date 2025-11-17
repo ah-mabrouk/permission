@@ -3,13 +3,16 @@
 namespace Mabrouk\Permission\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Mabrouk\Translatable\Traits\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SubPermission extends Model
 {
     use HasFactory, Translatable;
-    
+
     public $translatedAttributes = [
         'display_name',
     ];
@@ -21,17 +24,17 @@ class SubPermission extends Model
 
     ## Relations
 
-    public function permission()
+    public function permission(): BelongsTo
     {
         return $this->belongsTo(Permission::class, 'permission_id');
     }
 
-    public function permissionRoles()
+    public function permissionRoles(): BelongsToMany
     {
         return $this->belongsToMany(PermissionRole::class, 'sub_permission_id', 'permission_role_id');
     }
 
-    public function subPermissionPermissionRoles()
+    public function subPermissionPermissionRoles(): HasMany
     {
         return $this->hasMany(PermissionRoleSubPermission::class, 'sub_permission_id');
     }
@@ -49,7 +52,7 @@ class SubPermission extends Model
     public function getCustomDisplayNameAttribute()
     {
         return __('mabrouk/permission/permissions.custom_sub_permission_display_name.' . $this->display_name);
-    }    
+    }
 
     ## Query Scope Methods
 

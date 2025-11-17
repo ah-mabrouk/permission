@@ -2,6 +2,7 @@
 
 namespace Mabrouk\Permission\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,7 +19,7 @@ class PermissionTranslation extends Model
 
     ## Relations
 
-    public function permission()
+    public function permission(): BelongsTo
     {
         return $this->belongsTo(Permission::class, 'permission_id');
     }
@@ -46,7 +47,11 @@ class PermissionTranslation extends Model
                     $modifiedSegments[] = $segments[$i];
             }
         }
+
         return \ucwords(\str_replace('-', ' ', (\implode(' / ', $modifiedSegments))));
-        return $value;
     }
+
+    ## Query Scope Methods
+
+    ## Other Methods
 }

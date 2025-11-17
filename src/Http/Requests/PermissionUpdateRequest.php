@@ -3,6 +3,7 @@
 namespace Mabrouk\Permission\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Mabrouk\Permission\Models\Permission;
 use Mabrouk\Translatable\Rules\UniqueForLocale;
 
 class PermissionUpdateRequest extends FormRequest
@@ -10,9 +11,8 @@ class PermissionUpdateRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -20,9 +20,8 @@ class PermissionUpdateRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => [
@@ -46,12 +45,13 @@ class PermissionUpdateRequest extends FormRequest
         return parent::getValidatorInstance();
     }
 
-    public function updatePermission()
+    public function updatePermission(): Permission
     {
         $currentTranslationNamespace = config('translatable.translation_models_path');
         config(['translatable.translation_models_path' => 'Mabrouk\Permission\Models']);
         request()->permission->update([]);
         config(['translatable.translation_models_path' => $currentTranslationNamespace]);
+
         return request()->permission->refresh();
     }
 

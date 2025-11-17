@@ -5,6 +5,7 @@ namespace Mabrouk\Permission\Models;
 use Illuminate\Database\Eloquent\Model;
 use Mabrouk\Translatable\Traits\Translatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PermissionGroup extends Model
 {
@@ -20,7 +21,7 @@ class PermissionGroup extends Model
 
     ## Relations
 
-    public function permissions()
+    public function permissions(): HasMany
     {
         return $this->hasMany(Permission::class, 'permission_group_id');
     }

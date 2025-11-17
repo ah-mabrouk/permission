@@ -44,12 +44,10 @@ class RouteInvestigator
                 'url' => $this->sanitizeBaseUrl($route->uri()),
             ]);
             $newPermissionObject->name = ! Str::contains($newPermissionObject->url, '{') ? $newPermissionObject->url : $this->sanitizeRouteModelIdentifier($newPermissionObject->url);
-            
+
             if (config('app.env') == 'local') {
                 $fallbackHasName = Lang::hasForLocale('mabrouk/permission/permissions.custom_display_name.' . $newPermissionObject->name, config('translatable.fallback_locale'));
-
                 $secondLocale = config('translatable.fallback_locale') == 'en' ? 'ar' : 'en';
-
                 $secondLocaleHasName = Lang::hasForLocale('mabrouk/permission/permissions.custom_display_name.' . $newPermissionObject->name, $secondLocale);
 
                 if (!$fallbackHasName || !$secondLocaleHasName) {
@@ -57,13 +55,14 @@ class RouteInvestigator
                     throw new \RuntimeException($msg);
                 }
             }
-            
+
             return $newPermissionObject;
         })
         ->unique('name')
         ->filter(function ($permission) {
             return $permission->name != null && ! \in_array($permission->name, $this->existingPermissions->pluck('name')->flatten()->toArray());
         });
+
         return $this->saveBulkPermissions($permissions);
     }
 
@@ -130,16 +129,15 @@ class RouteInvestigator
      */
     public function routeIsPermissionable(Router $route) : bool
     {
-        for ($i = 0; $i < \count($this->excludedRoutes) ; $i++) {
-            if (\str_starts_with($route->uri(), '_') || Str::contains($route->uri(), $this->excludedRoutes[$i])) {
-                return false;
-            }
-        }
+        if (\str_starts_with($route->uri(), '_') || in_array($route->getName(), $this->excludedRoutes))
+            return false;
+
         for ($i = 0; $i < \count($this->baseUrls) ; $i++) {
             if (Str::contains($route->uri(), $this->baseUrls[$i])) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -155,6 +153,7 @@ class RouteInvestigator
                 return \count($urlParts) > 1 ? $urlParts[1] : $urlParts[0];
             }
         }
+
         return $url;
     }
 
@@ -164,12 +163,14 @@ class RouteInvestigator
         $segments = $segments->filter(function ($segment) {
             return ! Str::contains($segment, '{');
         })->flatten()->toArray();
+
         return \implode('/', $segments);
     }
 
     public function getLastRouteSegmentIdentifier(string $url) : string
     {
         $lastSegment = collect(\explode('/', $url))->last();
+
         return Str::contains($lastSegment, '{') ? $lastSegment : '';
     }
 }

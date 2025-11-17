@@ -2,6 +2,9 @@
 
 namespace Mabrouk\Permission\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Mabrouk\Filterable\Traits\Filterable;
@@ -25,27 +28,39 @@ class Role extends Model
 
     ## Relations
 
-    public function relatedModel($query, $relatedModelClass, ...$params)
+    public function relatedModel($query, $relatedModelClass, ...$params): MorphToMany
     {
         return $this->morphedByMany($relatedModelClass, 'roleable');
     }
 
-    public function roleableRecords()
+    public function roleableRecords(): HasMany
     {
         return $this->hasMany(Roleable::class, 'role_id');
     }
 
-    public function permissions()
+    public function permissions(): BelongsToMany
     {
         return $this->belongsToMany(Permission::class)->using(PermissionRole::class, 'role_id', 'permission_id');
     }
 
-    public function rolePermissions()
+    public function rolePermissions(): HasMany
     {
         return $this->hasMany(PermissionRole::class, 'role_id');
     }
 
     ## Getters & Setters
+
+    public function getPermissionsIdsAttribute()
+    {
+        return $this->permissions()->pluck('permissions.id')->flatten()->toArray();
+    }
+
+    public function getSubPermissionsIdsAttribute()
+    {
+        return $this->rolePermissions()->with('subPermissions:id')->get()->flatMap(function ($rolePermission) {
+            return $rolePermission->subPermissions->pluck('id');
+        })->toArray();
+    }
 
     ## Query Scope Methods
 
@@ -66,10 +81,11 @@ class Role extends Model
             $this->permissions()->sync($permissionsIds);
             $this->refresh()->syncSubPermissions($permissions);
         }
+
         return $this->refresh();
     }
 
-    private function syncSubPermissions(Collection $permissions)
+    private function syncSubPermissions(Collection $permissions): void
     {
         $this->rolePermissions->each(function ($rolePermission) use ($permissions) {
             $permissions->each(function ($subPermissionsIds, $permissionId) use ($rolePermission) {
@@ -78,21 +94,28 @@ class Role extends Model
                 }
             });
         });
+
+        $this->refreshRoleablesSubPermissionsCache();
     }
 
-    public function getPermissionsIdsAttribute()
+    private function refreshRoleablesSubPermissionsCache(): void
     {
-        return $this->permissions()->pluck('permissions.id')->flatten()->toArray();
+        $this->roleableRecords()
+            ->select(['roleable_type','roleable_id'])
+            ->chunkById(500, function ($chunk) {
+                $this->refreshRoleablesSubPermissionsCacheFrom($chunk);
+            });
     }
 
-    public function getSubPermissionsIdsAttribute()
+    private function refreshRoleablesSubPermissionsCacheFrom($roleables): void
     {
-        return $this->rolePermissions()->with('subPermissions:id')->get()->flatMap(function ($rolePermission) {
-            return $rolePermission->subPermissions->pluck('id');
-        })->toArray();
+        collect($roleables)->each(function ($roleable) {
+            $model = $roleable->roleable_type::find($roleable->roleable_id);
+            $model->cacheSubPermissionNames(force: true);
+        });
     }
 
-    public function remove()
+    public function remove(): self
     {
         $response = [];
         $response['message'] = __('mabrouk/permission/roles.destroy');
@@ -113,6 +136,7 @@ class Role extends Model
             $this->delete();
         }
         $this->response = $response;
+
         return $this;
     }
 }

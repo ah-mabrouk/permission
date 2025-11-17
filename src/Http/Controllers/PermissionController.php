@@ -16,7 +16,6 @@ class PermissionController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -28,8 +27,6 @@ class PermissionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \Mabrouk\Permission\Models\Permission  $permission
-     * @return \Illuminate\Http\Response
      */
     public function show(Permission $permission)
     {
@@ -41,9 +38,6 @@ class PermissionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Mabrouk\Permission\Http\Requests\PermissionUpdateRequest  $request
-     * @param  \Mabrouk\Permission\Models\Permission  $permission
-     * @return \Illuminate\Http\Response
      */
     public function update(PermissionUpdateRequest $request, Permission $permission)
     {

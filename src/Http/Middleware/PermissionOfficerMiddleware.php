@@ -20,6 +20,7 @@ class PermissionOfficerMiddleware
 
     public function __construct()
     {
+        //
     }
 
     private function authUser()
@@ -30,31 +31,28 @@ class PermissionOfficerMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
      */
     public function handle($request, Closure $next)
     {
+        $route = $request->route();
+        $uri = $route?->uri() ?? '';
         $this->baseUrls = config('permissions.base_urls') ?? [];
         $this->excludedRoutes = config('permissions.excluded_routes') ?? [];
         $this->subPermissionsNames = $this->authUser()?->subPermissionsNames ?? [];
-        $routeSubPermissionName = $this->subPermissionNameFromRoute(
-            $this->sanitizeBaseUrl($request->route()->uri()),
-            $request->route()->methods()[0]
-        );
+        $routeSubPermissionName = $this->subPermissionNameFromRoute(url: $this->sanitizeBaseUrl($uri), routeMethod: $route->methods()[0]);
+        $routeIsPermissionable = $this->routeIsPermissionable(uri: $uri, routeName: $route?->getName());
         if (
             (
-                $this->routeIsPermissionable($request->route()->uri())
-                && ! (bool) $this->authUser()
+                $routeIsPermissionable && !(bool) $this->authUser()
             ) || (
                 $routeSubPermissionName != null
-                && ! \in_array($routeSubPermissionName, $this->subPermissionsNames)
-                && $this->routeIsPermissionable($request->route()->uri())
+                && !\in_array($routeSubPermissionName, $this->subPermissionsNames)
+                && $routeIsPermissionable
             )
         ) {
             abort(403, 'Un-authenticated');
         }
+
         return $next($request);
     }
 
@@ -70,12 +68,14 @@ class PermissionOfficerMiddleware
                 return \count($urlParts) > 1 ? $urlParts[1] : $urlParts[0];
             }
         }
+
         return $url;
     }
 
     private function subPermissionNameFromRoute(string $url, $routeMethod) : string
     {
         $url = $this->sanitizeRouteModelIdentifier($url);
+
         return "{$url}_" . self::ROUTE_METHOD_MAP[$routeMethod];
     }
 
@@ -83,18 +83,17 @@ class PermissionOfficerMiddleware
      *
      * check routes against permissions config ['baseUrls', 'excluded routes']
      */
-    public function routeIsPermissionable($uri) : bool
+    public function routeIsPermissionable(string $uri, ?string $routeName) : bool
     {
-        for ($i = 0; $i < \count($this->excludedRoutes) ; $i++) {
-            if (Str::contains($uri, $this->excludedRoutes[$i])) {
-                return false;
-            }
+        if (in_array($routeName, $this->excludedRoutes)) {
+            return false;
         }
         for ($i = 0; $i < \count($this->baseUrls) ; $i++) {
             if (Str::contains($uri, $this->baseUrls[$i])) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -104,6 +103,7 @@ class PermissionOfficerMiddleware
         $segments = $segments->filter(function ($segment) {
             return ! Str::contains($segment, '{');
         })->flatten()->toArray();
+
         return \implode('/', $segments);
     }
 }

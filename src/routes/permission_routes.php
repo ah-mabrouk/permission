@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Mabrouk\Permission\Http\Controllers\PermissionGroupController;
+use Mabrouk\Permission\Http\Controllers\PermissionController;
+use Mabrouk\Permission\Http\Controllers\RoleController;
 
 Route::group([
     'middleware' => array_unique(array_merge(config('permissions.middlewares'), [

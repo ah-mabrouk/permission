@@ -109,17 +109,18 @@ return [
     | Project routes that will be excluded from Permissions process
     |--------------------------------------------------------------------------
     |
-    | In some rare cases you may have routes that have one of the above base urls but it
-    | don't need a permission to access. Here you may define this kind of routes.
-    | This routes can be added using full url or just a word included so,
-    | you need to carefully handle this to not miss things up.
+    | In some rare cases you may have routes that match one of the above base urls
+    | but shouldn't require a permission. Define those routes here by their
+    | ROUTE NAMES.
     |
-    | e.g ['admin-panel/signin', 'admin-panel/notifications', ...etc];
+    | Note: Any route with a URI starting with '_' is automatically excluded.
+    |
+    | e.g ['users.destroy', 'notifications.index', ...etc];
     |
     */
 
     'excluded_routes' => [
-        // 'notifications',
+        // 'notifications.index',
     ],
 
     /*
@@ -149,13 +150,14 @@ return [
     */
 
     'migration_sub_folder' => '',
-    
+
     /*
     |--------------------------------------------------------------------------
     | Force run seeder without questions
     |--------------------------------------------------------------------------
     |
-    | Force seeding package seeder without interruption by questions in terminal. The default value is true so, if you like to stop forcing the seeder to run just change the value to false
+    | Force seeding package seeder without interruption by questions in terminal.
+    | The default value is true so, if you like to stop forcing the seeder to run just change the value to false
     |
     */
 
@@ -184,6 +186,17 @@ return [
     |
     */
     'load_routes' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cache TTL (minutes)
+    |--------------------------------------------------------------------------
+    |
+    | Controls how long sub-permission names are cached for each user.
+    | The default is 120 minutes.
+    |
+    */
+    'cache_ttl_minutes' => 120,
 
     /*
     |--------------------------------------------------------------------------

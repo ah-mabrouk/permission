@@ -2,6 +2,8 @@
 
 namespace Mabrouk\Permission\Traits;
 
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Facades\Cache;
 use Mabrouk\Permission\Models\Role;
 use Mabrouk\Permission\Models\Permission;
 use Mabrouk\Permission\Models\SubPermission;
@@ -20,7 +22,9 @@ Trait HasPermission
         return auth('api')->user();
     }
 
-    public function roles()
+    ## Relations
+
+    public function roles(): MorphToMany
     {
         return $this->morphToMany(Role::class, 'roleable');
     }
@@ -39,35 +43,7 @@ Trait HasPermission
         })->flatten()->toArray())->distinct();
     }
 
-    public function takeRole(Role $role)
-    {
-        $roleIds = $this->roles->flatten()->pluck('id')->toArray();
-        if ((bool) $role) {
-            $roleIds[] = $role->id;
-        }
-        $roleIds = \array_unique($roleIds);
-        $this->roles()->sync($roleIds);
-        return $this->refresh();
-    }
-
-    public function leaveRole(Role $role)
-    {
-        if ((bool) $role) {
-            $this->roles()->detach($role->id);
-        }
-        return $this->refresh();
-    }
-
-    public function canAccess($subPermissionName)
-    {
-        return \in_array($subPermissionName, $this->subPermissionsNames);
-    }
-
-    public function leaveAllRoles()
-    {
-        $this->roles()->sync([]);
-        return $this->refresh();
-    }
+    ## Getters & Setters
 
     public function getPermissionsAttribute()
     {
@@ -81,8 +57,10 @@ Trait HasPermission
 
     public function getSubPermissionsNamesAttribute()
     {
-        return $this->subPermissions()->pluck('name')->flatten()->toArray();
+        return $this->cacheSubPermissionNames();
     }
+
+    ## Query Scope Methods
 
     public function scopeHasPermissions($query1, array $permissionsIds = [])
     {
@@ -99,5 +77,85 @@ Trait HasPermission
             });
         }
         return $query1;
+    }
+
+    ## Other Methods
+
+    public function takeRole(Role $role): self
+    {
+        $roleIds = $this->roles->flatten()->pluck('id')->toArray();
+        if ((bool) $role) {
+            $roleIds[] = $role->id;
+        }
+        $roleIds = \array_unique($roleIds);
+        $this->roles()->sync($roleIds);
+
+        $this->refresh();
+        $this->cacheSubPermissionNames(force: true);
+
+        return $this;
+    }
+
+    public function leaveRole(Role $role): self
+    {
+        if ((bool) $role) {
+            $this->roles()->detach($role->id);
+        }
+
+        $this->refresh();
+        $this->cacheSubPermissionNames(force: true);
+
+        return $this;
+    }
+
+    public function canAccess($subPermissionName): bool
+    {
+        return \in_array($subPermissionName, $this->subPermissionsNames);
+    }
+
+    public function leaveAllRoles(): self
+    {
+        $this->roles()->sync([]);
+
+        $this->refresh();
+        $this->cacheSubPermissionNames(force: true);
+
+        return $this;
+    }
+
+    /**
+     * Cache helpers
+     */
+    protected function getSubPermissionsCacheKey(): string
+    {
+        $cacheKey = "perm:user:{$this->getKey()}";
+        if (request()->company) {
+            $cacheKey .= ":company:".request()->company?->cachePrefix();
+        }
+
+        return $cacheKey;
+    }
+
+    public function cacheSubPermissionNames(bool $force = false): array
+    {
+        if ($force) {
+            $this->invalidateCachedSubPermissionNames();
+        }
+
+        $ttl = (int) config('permissions.cache_ttl_minutes', 120);
+
+        return Cache::remember($this->getSubPermissionsCacheKey(), now()->addMinutes($ttl), function () {
+            return $this->subPermissions()->pluck('name')->flatten()->toArray();
+        });
+    }
+
+    public function hasCachedSubPermissionNames(): bool
+    {
+        return Cache::has($this->getSubPermissionsCacheKey());
+    }
+
+    public function invalidateCachedSubPermissionNames(): void
+    {
+        Cache::forget($this->getSubPermissionsCacheKey());
     }
 }

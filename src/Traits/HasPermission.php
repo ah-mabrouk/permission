@@ -128,12 +128,7 @@ Trait HasPermission
      */
     protected function getSubPermissionsCacheKey(): string
     {
-        $cacheKey = "perm:user:{$this->getKey()}";
-        if (request()->company) {
-            $cacheKey .= ":company:".request()->company?->cachePrefix();
-        }
-
-        return $cacheKey;
+        return "perm:user:{$this->getKey()}";
     }
 
     public function cacheSubPermissionNames(bool $force = false): array

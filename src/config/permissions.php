@@ -140,7 +140,6 @@ return [
 
      'custom_sub_permissions_display_name' => [
          // 'users.store' => 'custom_sub_permission_name',
-         'admin.countries.store' => 'edit',
      ],
 
     /*

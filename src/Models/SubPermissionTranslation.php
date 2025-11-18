@@ -24,18 +24,6 @@ class SubPermissionTranslation extends Model
 
     ## Getters & Setters
 
-    public function setDisplayNameAttribute($value)
-    {
-        $this->attributes['display_name'] = $this->prepareDisplayName($value);
-    }
-
-    private function prepareDisplayName($value)
-    {
-        return \explode('_', $value)[1];
-    }
-
-    ## Getters & Setters
-
     ## Query Scope Methods
 
     ## Other Methods

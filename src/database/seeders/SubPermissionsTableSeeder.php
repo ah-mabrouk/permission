@@ -19,8 +19,11 @@ class SubPermissionsTableSeeder extends Seeder
         $investigator = new RouteInvestigator();
         Permission::all()->each(function ($permission) use ($investigator) {
             $investigator->createSubPermissionsOf($permission)->each(function ($subPermission) {
-                SubPermission::create($subPermission)->translate([
-                    'display_name' => $subPermission['name'],
+                SubPermission::create([
+                    'permission_id' => $subPermission['permission_id'],
+                    'name' => $subPermission['name'],
+                ])->translate([
+                    'display_name' => $subPermission['display_name'],
                 ]);
             });
         });

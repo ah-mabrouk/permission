@@ -124,6 +124,26 @@ return [
     ],
 
     /*
+     | --------------------------------------------------------------------------
+     | Custom Sub-Permissions Display Names
+     | --------------------------------------------------------------------------
+     |
+     | Here you may define custom display names for specific sub-permissions.
+     | This is useful when the default naming convention does not align
+     | with your application's terminology or when you want to provide
+     | more user-friendly names for certain actions.
+     |
+     | You can map specific route names to your desired display names
+     | using the format 'route.name' => 'custom_display_name'.
+     |
+     */
+
+     'custom_sub_permissions_display_name' => [
+         // 'users.store' => 'custom_sub_permission_name',
+         'admin.countries.store' => 'edit',
+     ],
+
+    /*
     |--------------------------------------------------------------------------
     | Project main permission group
     |--------------------------------------------------------------------------

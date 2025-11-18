@@ -111,7 +111,7 @@ class Role extends Model
     {
         collect($roleables)->each(function ($roleable) {
             $model = $roleable->roleable_type::find($roleable->roleable_id);
-            $model?->cacheSubPermissionNames(force: true);
+            $model->cacheSubPermissionNames(force: true);
         });
     }
 

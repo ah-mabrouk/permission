@@ -101,8 +101,6 @@ class RouteInvestigator
     {
         $customDisplayNames = config('permissions.custom_sub_permissions_display_name');
 
-        var_dump($route->getName(), \array_key_exists($route->getName(), $customDisplayNames));
-
         if (\array_key_exists($route->getName(), $customDisplayNames)) {
             return $customDisplayNames[$route->getName()];
         }

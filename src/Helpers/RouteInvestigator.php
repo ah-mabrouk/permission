@@ -86,12 +86,28 @@ class RouteInvestigator
         return $this->permissionableRoutes->filter(function ($route) use ($permission) {
             return $this->permissionIsRelatedToRoute($permission, $route) && ! \in_array($this->subPermissionNameFromRoute($permission, $route), $this->subPermissionsNamesOf($permission));
         })->map(function ($route) use ($permission) {
+            $subPermissionName = $this->subPermissionNameFromRoute($permission, $route);
+
             $newSubPermissionAttributes = [
                 'permission_id' => $permission->id,
-                'name' => $this->subPermissionNameFromRoute($permission, $route),
+                'name' => $subPermissionName,
+                'display_name' => $this->getSubPermissionDisplayNameForRoute($route, $subPermissionName),
             ];
             return $newSubPermissionAttributes;
         })->unique('name');
+    }
+
+    private function getSubPermissionDisplayNameForRoute(Router $route, string $subPermissionName): string
+    {
+        $customDisplayNames = config('permissions.custom_sub_permissions_display_name');
+
+        var_dump($route->getName(), \array_key_exists($route->getName(), $customDisplayNames));
+
+        if (\array_key_exists($route->getName(), $customDisplayNames)) {
+            return $customDisplayNames[$route->getName()];
+        }
+
+        return \explode('_', $subPermissionName)[1];
     }
 
     private function permissionIsRelatedToRoute(Permission $permission, Router $route)

@@ -101,7 +101,7 @@ class Role extends Model
     private function refreshRoleablesSubPermissionsCache(): void
     {
         $this->roleableRecords()
-            ->select(['roleable_type','roleable_id'])
+            ->select(['id', 'roleable_type','roleable_id'])
             ->chunkById(500, function ($chunk) {
                 $this->refreshRoleablesSubPermissionsCacheFrom($chunk);
             });
@@ -111,7 +111,7 @@ class Role extends Model
     {
         collect($roleables)->each(function ($roleable) {
             $model = $roleable->roleable_type::find($roleable->roleable_id);
-            $model->cacheSubPermissionNames(force: true);
+            $model?->cacheSubPermissionNames(force: true);
         });
     }
 

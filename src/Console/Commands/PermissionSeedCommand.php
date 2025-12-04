@@ -49,11 +49,24 @@ class PermissionSeedCommand extends Command
         if (config('permissions.force_seeding_without_questions')) {
             $seedOptions['--force'] = true;
         }
-        
+
         $this->call('db:seed', $seedOptions);
 
         config(['translatable.translation_models_path' => $currentTranslationNamespace]);
 
+        self::forgetCachedSubPermissions();
+
         return Command::SUCCESS;
+    }
+
+    private static function forgetCachedSubPermissions(): void
+    {
+        $roleableModels = config('permissions.roleable_models');
+
+        foreach ($roleableModels as $roleableModel) {
+            $roleableModel::whereHas('roles')->each(function ($model) {
+                $model->invalidateCachedSubPermissionNames();
+            });
+        }
     }
 }

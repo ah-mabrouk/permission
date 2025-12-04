@@ -50,21 +50,23 @@ class PermissionSeedCommand extends Command
             $seedOptions['--force'] = true;
         }
 
-        self::forgetCachedSubPermissions();
-
         $this->call('db:seed', $seedOptions);
 
         config(['translatable.translation_models_path' => $currentTranslationNamespace]);
 
+        self::forgetCachedSubPermissions();
+
         return Command::SUCCESS;
     }
 
-    public static function forgetCachedSubPermissions(): void
+    private static function forgetCachedSubPermissions(): void
     {
-        $userModelClass = config('permissions.project_owner_model');
+        $roleableModels = config('permissions.roleable_models');
 
-        $userModelClass::whereHas('roles')->each(function ($user) {
-            $user->invalidateCachedSubPermissionNames();
-        });
+        foreach ($roleableModels as $roleableModel) {
+            $roleableModel::whereHas('roles')->each(function ($model) {
+                $model->invalidateCachedSubPermissionNames();
+            });
+        }
     }
 }
